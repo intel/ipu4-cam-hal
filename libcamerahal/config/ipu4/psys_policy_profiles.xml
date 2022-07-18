@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2016-2018 Intel Corporation.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<PsysPolicyConfig>
+    <graph id="100000">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <!-- the name can't be more than 15 -->
+        <pipe_executor name="normal_pipe"  pgs="video_pre_gdc,video_post_gdc" op_modes="2,0"/>
+    </graph>
+
+    <graph id="100001">
+        <!-- op_modes: 0-disabled, 2-coupled 3-coupled_relay. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="hdr_pipe" pgs="video_hdr_pre_proc,video_hq_ns_pre_gdc,video_hq_ns_post_gdc" op_modes="2,3,0"/>
+    </graph>
+
+    <graph id="100002">
+        <!-- op_modes: 0-disabled, 2-coupled 3-coupled_relay. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="ull_pipe" pgs="video_ull_pre_proc,video_hq_ns_pre_gdc,video_hq_ns_post_gdc" op_modes="2,3,0"/>
+    </graph>
+
+    <graph id="100003">
+        <pipe_executor name="video_ll_pipe" pgs="video_ll_pre_gdc"/>
+    </graph>
+
+    <graph id="100004">
+        <!-- op_modes: 0-disabled, 1-basic. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="still_pipe"  pgs="still_pre_gdc,still_post_gdc" op_modes="1,0"/>
+    </graph>
+
+    <graph id="100005">
+        <pipe_executor name="video_isa"  pgs="video_isa_preview"/>
+        <pipe_executor name="video_pre"  pgs="video_pre_gdc"/>
+        <pipe_executor name="video_post" pgs="video_post_gdc"/>
+    </graph>
+
+    <graph id="100006">
+        <pipe_executor name="isa_preview" pgs="video_isa_preview"/>
+        <pipe_executor name="video_pre"   pgs="video_pre_gdc"/>
+        <pipe_executor name="video_post"  pgs="video_post_gdc"/>
+        <pipe_executor name="isa_still"   pgs="video_isa_still"/>
+        <pipe_executor name="still_pre"   pgs="still_pre_gdc"/>
+        <pipe_executor name="still_post"  pgs="still_post_gdc"/>
+    </graph>
+
+    <graph id="100007">
+        <!-- op_modes: 0-disabled, 1-basic. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="still_isa_pipe"  pgs="video_isa_still,still_pre_gdc,still_post_gdc" op_modes="1,1,0"/>
+    </graph>
+
+    <graph id="100008">
+        <pipe_executor name="video_isa"  pgs="video_isa"/>
+        <pipe_executor name="video_pre"  pgs="video_pre_gdc"/>
+        <pipe_executor name="video_post" pgs="video_post_gdc"/>
+        <pipe_executor name="still_pre"  pgs="still_pre_gdc"/>
+        <pipe_executor name="still_post" pgs="still_post_gdc"/>
+    </graph>
+
+    <graph id="100009">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="preview_pipe"  pgs="video_pre_gdc,video_post_gdc" op_modes="2,0"/>
+        <pipe_executor name="still_pipe"  pgs="still_pre_gdc,still_post_gdc" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100010">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="normal_4K_pipe"  pgs="video_pre_gdc,video_hp_post_gdc" op_modes="2,0"/>
+    </graph>
+
+    <graph id="100011">
+        <pipe_executor name="hdr_hp_pipe"  pgs="video_hp_pre_gdc,video_hp_post_gdc" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100012">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="ull_hq_4k_pipe"  pgs="video_isa_hq_4k_pre_gdc,video_hq_4k_post_gdc" op_modes="2,0"/>
+    </graph>
+
+    <graph id="100013">
+        <!-- notify_policy: 0-frame first, 1-stats first -->
+        <pipe_executor name="video_hdr_stats"  pgs="video_hdr_stats" notify_policy="1"/>
+        <pipe_executor name="video_drc_pre"  pgs="video_drc_pre_gdc"/>
+        <pipe_executor name="video_hdr_post"  pgs="video_hq_ns_post_gdc"/>
+        <!-- op_modes: 0-disabled, 2-coupled 3-coupled_relay. see ia_cipf_css.h in libiacss -->
+        <!--pipe_executor name="hdr_stats_drcpre_post" pgs="video_hdr_stats,video_drc_pre_gdc,video_hq_ns_post_gdc" op_modes="2,3,0"/-->
+    </graph>
+
+    <graph id="100014">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="dol_hdr_4k_pre"  pgs="video_hdr_hp_pre_gdc" cyclic_feedback_routine="1" cyclic_feedback_delay="2"/>
+        <pipe_executor name="dol_hdr_4k_post"  pgs="video_hp_post_gdc" cyclic_feedback_routine="0" cyclic_feedback_delay="1"/>
+    </graph>
+
+    <graph id="100015">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="ull_hq_4k_pipe"  pgs="video_isa_hq_4k_pre_gdc,video_hq_4k_post_gdc" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100016">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="video_hq_vcr2"  pgs="video_pre_gdc_hq_vcr2,video_post_gdc_v2_mbr" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100017">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="still_hq_vcr2"  pgs="still_pre_gdc_xnr4_v3_vcr2,still_post_gdc_v2_mbr" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100018">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="video_isl_vcr2"  pgs="psys_isl_cnl,video_post_gdc_v2_mbr" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100019">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="video_isl_mbr"  pgs="psys_isl_cnl,video_pre_gdc_hq_vcr2,video_post_gdc_v2_mbr" op_modes="0,0,0"/>
+    </graph>
+
+    <graph id="100020">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="still_isl_mbr"  pgs="psys_isl_cnl,still_pre_gdc_xnr4_v3_vcr2,still_post_gdc_v2_mbr" op_modes="0,0,0"/>
+    </graph>
+
+    <graph id="100030">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="video_hq_vcr2"  pgs="video_pre_gdc_hq_vcr2,video_post_gdc_v2_mbr" op_modes="0,0"/>
+        <pipe_executor name="still_hq_vcr2"  pgs="still_pre_gdc_xnr4_v3_vcr2,still_post_gdc_v2_mbr" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100022">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="psys_isl_cnl"  pgs="psys_isl_cnl"/>
+        <pipe_executor name="video_isl_mbr"  pgs="video_pre_gdc_hq_vcr2,video_post_gdc_v2_mbr" op_modes="0,0"/>
+        <pipe_executor name="still_isl_mbr"  pgs="still_pre_gdc_xnr4_v3_vcr2,still_post_gdc_v2_mbr" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100023">
+        <pipe_executor name="hdr_hp_pipe"  pgs="video_hp_drc2_pre_gdc,video_hp_post_gdc" op_modes="0,0"/>
+    </graph>
+
+    <graph id="100024">
+        <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+        <pipe_executor name="hdr_hp_pipe_pre"  pgs="vhdr_pregdc_hp_2fr_v2"/>
+        <pipe_executor name="dol_hdr_4k_post"  pgs="video_hp_post_gdc"/>
+    </graph>
+
+    <graph id="100025">
+        <pipe_executor name="hdr20_hp_pipe"  pgs="video_hp_drc2_v2_pre_gdc,video_hp_post_gdc" op_modes="0,0"/>
+        <exclusive pgs="video_hp_drc2_v2_pre_gdc"/>
+    </graph>
+</PsysPolicyConfig>

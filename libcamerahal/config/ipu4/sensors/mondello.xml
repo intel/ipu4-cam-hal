@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="mondello" description="mondello bypass">
+        <MediaCtlConfig id="0"> <!-- FE capture -->
+            <format name="adv7481 pixel array a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481 binner a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481 binner a" pad="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0"/>
+            <selection name="adv7481 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481 pixel array a" srcPad="0" sinkName="adv7481 binner a" sinkPad="0" enable="true"/>
+            <link srcName="adv7481 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI-2 0 capture 0" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 CSI-2 0 capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- BE capture -->
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8"/>
+            <format name="adv7481 pixel array a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481 binner a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481 binner a" pad="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0"/>
+            <selection name="adv7481 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481 pixel array a" srcPad="0" sinkName="adv7481 binner a" sinkPad="0" enable="true"/>
+            <link srcName="adv7481 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,720x576,0,0,
+                                          V4L2_PIX_FMT_UYVY,800x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x720,0,0,
+                                          V4L2_PIX_FMT_UYVY,1920x1080,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,720x576,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x720,0,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,0,0,
+                                          V4L2_PIX_FMT_BGR24,240x135,0,0,
+                                          V4L2_PIX_FMT_BGR24,240x160,0,0,
+                                          V4L2_PIX_FMT_BGR24,640x480,0,0,
+                                          V4L2_PIX_FMT_BGR24,720x576,0,0,
+                                          V4L2_PIX_FMT_BGR24,800x480,0,0,
+                                          V4L2_PIX_FMT_BGR24,1280x720,0,0,
+                                          V4L2_PIX_FMT_BGR24,1920x1080,0,0,
+                                          V4L2_PIX_FMT_BGR24,3840x2160,0,0,
+                                          V4L2_PIX_FMT_BGR32,640x480,0,0,
+                                          V4L2_PIX_FMT_BGR32,720x576,0,0,
+                                          V4L2_PIX_FMT_BGR32,800x480,0,0,
+                                          V4L2_PIX_FMT_BGR32,1280x720,0,0,
+                                          V4L2_PIX_FMT_BGR32,1920x1080,0,0,
+                                          V4L2_PIX_FMT_BGR32,3840x2160,0,0,
+                                          V4L2_PIX_FMT_RGB565,240x135,0,0,
+                                          V4L2_PIX_FMT_RGB565,240x160,0,0,
+                                          V4L2_PIX_FMT_RGB565,640x480,0,0,
+                                          V4L2_PIX_FMT_RGB565,720x576,0,0,
+                                          V4L2_PIX_FMT_RGB565,800x480,0,0,
+                                          V4L2_PIX_FMT_RGB565,1280x720,0,0,
+                                          V4L2_PIX_FMT_RGB565,1920x1080,0,0,
+                                          V4L2_PIX_FMT_RGB565,3840x2160,0,0,
+                                          V4L2_PIX_FMT_XBGR32,640x480,0,1,
+                                          V4L2_PIX_FMT_XBGR32,720x576,0,1,
+                                          V4L2_PIX_FMT_XBGR32,800x480,0,1,
+                                          V4L2_PIX_FMT_XBGR32,1280x720,0,1,
+                                          V4L2_PIX_FMT_XBGR32,1920x1080,0,1,
+                                          V4L2_PIX_FMT_XBGR32,3840x2160,0,1,
+                                          V4L2_PIX_FMT_UYVY,720x480,7,0,
+                                          V4L2_PIX_FMT_UYVY,720x576,7,0,
+                                          V4L2_PIX_FMT_UYVY,800x480,7,0,
+                                          V4L2_PIX_FMT_UYVY,1920x1080,7,0,
+                                          V4L2_PIX_FMT_YUYV,720x480,7,0,
+                                          V4L2_PIX_FMT_YUYV,720x576,7,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,7,0,
+                                          V4L2_PIX_FMT_XBGR32,720x480,7,1,
+                                          V4L2_PIX_FMT_XBGR32,720x576,7,1,
+                                          V4L2_PIX_FMT_XBGR32,800x480,7,1,
+                                          V4L2_PIX_FMT_XBGR32,1920x1080,7,1,
+                                          V4L2_PIX_FMT_XRGB32,720x480,7,1,
+                                          V4L2_PIX_FMT_XRGB32,720x576,7,1,
+                                          V4L2_PIX_FMT_XRGB32,800x480,7,1,
+                                          V4L2_PIX_FMT_XRGB32,1920x1080,7,1,
+                                          V4L2_PIX_FMT_NV12,240x135,0,0,
+                                          V4L2_PIX_FMT_NV12,240x160,0,0,
+                                          V4L2_PIX_FMT_NV12,640x480,0,0,
+                                          V4L2_PIX_FMT_NV12,720x576,0,0,
+                                          V4L2_PIX_FMT_NV12,1280x720,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0,
+                                          V4L2_PIX_FMT_NV12,3840x2160,0,0,
+                                          V4L2_PIX_FMT_NV12,240x135,7,0,
+                                          V4L2_PIX_FMT_NV12,240x160,7,0,
+                                          V4L2_PIX_FMT_NV12,640x480,7,0,
+                                          V4L2_PIX_FMT_NV12,720x480,7,0,
+                                          V4L2_PIX_FMT_NV12,720x576,7,0,
+                                          V4L2_PIX_FMT_NV12,1280x720,7,0,
+                                          V4L2_PIX_FMT_NV12,1920x1080,7,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,7,0,
+                                          V4L2_PIX_FMT_NV12,3840x2160,7,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,720x576,0,1,
+                                          V4L2_PIX_FMT_NV16,800x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x720,0,1,
+                                          V4L2_PIX_FMT_NV16,1920x1080,0,1,
+                                          V4L2_PIX_FMT_NV16,720x480,7,1,
+                                          V4L2_PIX_FMT_NV16,720x576,7,1,
+                                          V4L2_PIX_FMT_NV16,1920x1080,7,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,720x480,720x576,800x480,1280x720,1920x1080"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_BGR24,V4L2_PIX_FMT_RGB565,V4L2_PIX_FMT_XBGR32,V4L2_PIX_FMT_XRGB32,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+    </Sensor>
+
+    <Sensor name="mondello-2" description="mondello-2 bypass">
+        <MediaCtlConfig id="0"> <!-- FE capture -->
+            <format name="adv7481b pixel array b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0"/>
+            <selection name="adv7481b binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481b pixel array b" srcPad="0" sinkName="adv7481b binner b" sinkPad="0" enable="true"/>
+            <link srcName="adv7481b binner b" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI-2 4 capture 0" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 CSI-2 4 capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- BE capture -->
+            <format name="Intel IPU4 CSI2 BE SOC" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="9"/>
+            <format name="adv7481b pixel array b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0"/>
+            <selection name="adv7481b binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481b pixel array b" srcPad="0" sinkName="adv7481b binner b" sinkPad="0" enable="true"/>
+            <link srcName="adv7481b binner b" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="1" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="1" sinkStream="0" srcPad="9" srcStream="1" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="9" sinkName="Intel IPU4 BE SOC capture 1" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,720x576,0,0,
+                                          V4L2_PIX_FMT_UYVY,800x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x720,0,0,
+                                          V4L2_PIX_FMT_UYVY,1920x1080,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,720x576,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x720,0,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,0,0,
+                                          V4L2_PIX_FMT_BGR24,240x135,0,0,
+                                          V4L2_PIX_FMT_BGR24,240x160,0,0,
+                                          V4L2_PIX_FMT_BGR24,640x480,0,0,
+                                          V4L2_PIX_FMT_BGR24,720x576,0,0,
+                                          V4L2_PIX_FMT_BGR24,800x480,0,0,
+                                          V4L2_PIX_FMT_BGR24,1280x720,0,0,
+                                          V4L2_PIX_FMT_BGR24,1920x1080,0,0,
+                                          V4L2_PIX_FMT_BGR24,3840x2160,0,0,
+                                          V4L2_PIX_FMT_BGR32,640x480,0,0,
+                                          V4L2_PIX_FMT_BGR32,720x576,0,0,
+                                          V4L2_PIX_FMT_BGR32,800x480,0,0,
+                                          V4L2_PIX_FMT_BGR32,1280x720,0,0,
+                                          V4L2_PIX_FMT_BGR32,1920x1080,0,0,
+                                          V4L2_PIX_FMT_BGR32,3840x2160,0,0,
+                                          V4L2_PIX_FMT_RGB565,240x135,0,0,
+                                          V4L2_PIX_FMT_RGB565,240x160,0,0,
+                                          V4L2_PIX_FMT_RGB565,640x480,0,0,
+                                          V4L2_PIX_FMT_RGB565,720x576,0,0,
+                                          V4L2_PIX_FMT_RGB565,800x480,0,0,
+                                          V4L2_PIX_FMT_RGB565,1280x720,0,0,
+                                          V4L2_PIX_FMT_RGB565,1920x1080,0,0,
+                                          V4L2_PIX_FMT_RGB565,3840x2160,0,0,
+                                          V4L2_PIX_FMT_XBGR32,640x480,0,1,
+                                          V4L2_PIX_FMT_XBGR32,720x576,0,1,
+                                          V4L2_PIX_FMT_XBGR32,800x480,0,1,
+                                          V4L2_PIX_FMT_XBGR32,1280x720,0,1,
+                                          V4L2_PIX_FMT_XBGR32,1920x1080,0,1,
+                                          V4L2_PIX_FMT_XBGR32,3840x2160,0,1,
+                                          V4L2_PIX_FMT_UYVY,720x480,7,0,
+                                          V4L2_PIX_FMT_UYVY,720x576,7,0,
+                                          V4L2_PIX_FMT_UYVY,800x480,7,0,
+                                          V4L2_PIX_FMT_UYVY,1920x1080,7,0,
+                                          V4L2_PIX_FMT_YUYV,720x480,7,0,
+                                          V4L2_PIX_FMT_YUYV,720x576,7,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,7,0,
+                                          V4L2_PIX_FMT_XBGR32,720x480,7,1,
+                                          V4L2_PIX_FMT_XBGR32,720x576,7,1,
+                                          V4L2_PIX_FMT_XBGR32,800x480,7,1,
+                                          V4L2_PIX_FMT_XBGR32,1920x1080,7,1,
+                                          V4L2_PIX_FMT_XRGB32,720x480,7,1,
+                                          V4L2_PIX_FMT_XRGB32,720x576,7,1,
+                                          V4L2_PIX_FMT_XRGB32,800x480,7,1,
+                                          V4L2_PIX_FMT_XRGB32,1920x1080,7,1,
+                                          V4L2_PIX_FMT_NV12,240x135,0,0,
+                                          V4L2_PIX_FMT_NV12,240x160,0,0,
+                                          V4L2_PIX_FMT_NV12,640x480,0,0,
+                                          V4L2_PIX_FMT_NV12,720x480,0,0,
+                                          V4L2_PIX_FMT_NV12,720x576,0,0,
+                                          V4L2_PIX_FMT_NV12,1280x720,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0,
+                                          V4L2_PIX_FMT_NV12,3840x2160,0,0,
+                                          V4L2_PIX_FMT_NV12,240x135,7,0,
+                                          V4L2_PIX_FMT_NV12,240x160,7,0,
+                                          V4L2_PIX_FMT_NV12,640x480,7,0,
+                                          V4L2_PIX_FMT_NV12,720x480,7,0,
+                                          V4L2_PIX_FMT_NV12,720x576,7,0,
+                                          V4L2_PIX_FMT_NV12,1280x720,7,0,
+                                          V4L2_PIX_FMT_NV12,1920x1080,7,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,7,0,
+                                          V4L2_PIX_FMT_NV12,3840x2160,7,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,720x576,0,1,
+                                          V4L2_PIX_FMT_NV16,800x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x720,0,1,
+                                          V4L2_PIX_FMT_NV16,1920x1080,0,1,
+                                          V4L2_PIX_FMT_NV16,720x480,7,1,
+                                          V4L2_PIX_FMT_NV16,720x576,7,1,
+                                          V4L2_PIX_FMT_NV16,1920x1080,7,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,720x480,720x576,800x480,1280x720,1920x1080"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_BGR24,V4L2_PIX_FMT_RGB565,V4L2_PIX_FMT_XBGR32,V4L2_PIX_FMT_XRGB32,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+    </Sensor>
+
+    <Sensor name="mondello-3" description="adv7481 on GP MRB">
+        <MediaCtlConfig id="0"> <!-- UYVY BE capture -->
+            <format name="adv7481-cvbs pixel array a" pad="0" width="720" height="288"/>
+            <format name="adv7481-cvbs binner a" pad="0" width="720" height="288"/>
+            <format name="adv7481-cvbs binner a" pad="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="720" height="240"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" width="720" height="240"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" width="720" height="240"/>
+            <selection name="adv7481-cvbs binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481-cvbs binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,176x144,7,0,
+                                          V4L2_PIX_FMT_NV12,320x240,7,0,
+                                          V4L2_PIX_FMT_NV12,640x480,7,0,
+                                          V4L2_PIX_FMT_NV12,720x480,7,0,
+                                          V4L2_PIX_FMT_NV12,1280x720,7,0,
+                                          V4L2_PIX_FMT_NV12,1920x1080,7,0"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="720x480"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY"/>
+        <enableAIQ value="false"/>
+        <topBottomReverse value="1"/>
+    </Sensor>
+
+    <Sensor name="mondello-4" description="adv7481 hdmi on GP MRB">
+        <MediaCtlConfig id="0"> <!-- UYVY 1080P hdmi BE capture -->
+            <format name="adv7481-hdmi pixel array a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481-hdmi binner a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481-hdmi binner a" pad="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" width="1920" height="1080"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" width="1920" height="1080"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" width="1920" height="1080"/>
+            <control name="adv7481-hdmi pixel array a" ctrlId="V4L2_CID_TEST_PATTERN" value="4" ctrlName="set TEST PATTERN"/>
+            <link srcName="adv7481-hdmi binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,V4L2_PIX_FMT_XBGR32,1920x1080,0,0,V4L2_PIX_FMT_RGB565,1920x1080,0,0"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="1920x1080"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_XBGR32,V4L2_PIX_FMT_XRGB32,V4L2_PIX_FMT_RGB565"/>
+        <enableAIQ value="false"/>
+    </Sensor>
+</CameraSettings>

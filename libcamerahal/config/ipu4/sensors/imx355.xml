@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017-2018 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="imx355" description="imx355 raw sensor, but only enable ISA path.">
+        <MediaCtlConfig id="0" ConfigMode="AUTO" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_YUYV420_V32">
+            <link srcName="imx355 a" srcPad="0" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="4" sinkName="Intel IPU4 ISA scaled capture" sinkPad="0" enable="true"/>
+
+            <format name="imx355 a" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="3200" height="1800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="41" top="332" width="3200" height="1800"/>
+            <format name="Intel IPU4 ISA" pad="0" width="3200" height="1800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="3200" height="1800" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="Intel IPU4 ISA" pad="4" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="Intel IPU4 ISA" pad="4" width="1920" height="1080" format="MEDIA_BUS_FMT_YUYV12_1X24"/>
+
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="imx355 a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA scaled capture" videoNodeType="VIDEO_ISA_SCALE"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+
+            <output port="main" width="1920" height="1080" format="V4L2_PIX_FMT_YUYV420_V32"/>
+            <output port="second" width="3200" height="1800" format="V4L2_PIX_FMT_SGRBG12V32"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="AUTO" outputWidth="3264" outputHeight="2448" format="V4L2_PIX_FMT_SGRBG10V32">
+            <link srcName="imx355 a" srcPad="0" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 CSI2 BE capture" sinkPad="0" enable="true"/>
+
+            <format name="imx355 a" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="7" top="8" width="3264" height="2448"/>
+
+            <videonode name="Intel IPU4 CSI2 BE capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="imx355 a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="2" ConfigMode="STILL_CAPTURE" outputWidth="3200" outputHeight="1800" format="V4L2_PIX_FMT_SGRBG12V32">
+            <link srcName="imx355 a" srcPad="0" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+
+            <format name="imx355 a" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="3200" height="1800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="41" top="332" width="3200" height="1800"/>
+            <format name="Intel IPU4 ISA" pad="0" width="3200" height="1800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="3200" height="1800" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="imx355 a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="3" ConfigMode="AUTO" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_YUYV420_V32">
+            <link srcName="imx355 a" srcPad="0" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="4" sinkName="Intel IPU4 ISA scaled capture" sinkPad="0" enable="true"/>
+
+            <format name="imx355 a" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="7" top="8" width="3264" height="2448"/>
+            <format name="Intel IPU4 ISA" pad="0" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="Intel IPU4 ISA" pad="4" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="Intel IPU4 ISA" pad="4" width="1920" height="1088" format="MEDIA_BUS_FMT_YUYV12_1X24"/>
+
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="imx355 a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA scaled capture" videoNodeType="VIDEO_ISA_SCALE"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+
+            <output port="main" width="1920" height="1088" format="V4L2_PIX_FMT_YUYV420_V32"/>
+            <output port="second" width="3264" height="2448" format="V4L2_PIX_FMT_SGRBG12V32"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="4" ConfigMode="STILL_CAPTURE" outputWidth="3264" outputHeight="2448" format="V4L2_PIX_FMT_SGRBG12V32">
+            <link srcName="imx355 a" srcPad="0" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+
+            <format name="imx355 a" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="7" top="8" width="3264" height="2448"/>
+            <format name="Intel IPU4 ISA" pad="0" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="imx355 a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="5" ConfigMode="AUTO" outputWidth="1600" outputHeight="1200" format="V4L2_PIX_FMT_YUYV420_V32">
+            <link srcName="imx355 a" srcPad="0" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="4" sinkName="Intel IPU4 ISA scaled capture" sinkPad="0" enable="true"/>
+
+            <format name="imx355 a" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="3280" height="2464" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="7" top="8" width="3264" height="2448"/>
+            <format name="Intel IPU4 ISA" pad="0" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="3264" height="2448" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="Intel IPU4 ISA" pad="4" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1600" height="1200"/>
+            <format name="Intel IPU4 ISA" pad="4" width="1600" height="1200" format="MEDIA_BUS_FMT_YUYV12_1X24"/>
+
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="imx355 a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA scaled capture" videoNodeType="VIDEO_ISA_SCALE"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+
+            <output port="main" width="1600" height="1200" format="V4L2_PIX_FMT_YUYV420_V32"/>
+            <output port="second" width="3264" height="2448" format="V4L2_PIX_FMT_SGRBG12V32"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate)" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,(30/30),
+                                          V4L2_PIX_FMT_NV12,1600x1200,0,0,(30/30),
+                                          V4L2_PIX_FMT_NV12,3264x2448,0,0,(30/30),
+                                          V4L2_PIX_FMT_NV12,384x288,0,0,(30/30),
+                                          V4L2_PIX_FMT_NV12,384x216,0,0,(30/30)"/>
+            <fpsRange value="10,30"/>
+            <evRange value="-1,1"/>
+            <evStep value="1,2"/>
+            <supportedAeMode value="AUTO"/>
+            <supportedVideoStabilizationModes value="OFF"/>
+            <supportedAntibandingMode value="AUTO"/>
+            <supportedAwbMode value="AUTO"/>
+            <supportedAfMode value="AUTO,MACRO,CONTINUOUS_VIDEO,CONTINUOUS_PICTURE,OFF"/>
+
+            <!-- 0: OFF, 1: AUTO, 2: USE_SCENE_MODE, 3: OFF_KEEP_STATE -->
+            <control.availableModes value="1"/>
+
+            <sensor.orientation value="0"/>
+            <sensor.info.sensitivityRange value="100,800"/>
+            <!-- microsecond -->
+            <sensor.info.exposureTimeRange value="100,200000"/>
+
+            <!-- Blow static metadata are for camera HAL V3 -->
+            <sensor.info.activeArraySize value="0,0,3280,2464"/>
+            <sensor.info.pixelArraySize value="3296x2480"/>
+            <!-- 3296x1.12um 2480x1.12um -->
+            <sensor.info.physicalSize value="3.69,2.77"/>
+            <!-- 0: off, 1: solid color, 2: color bars  -->
+            <sensor.availableTestPatternModes value="0,2"/>
+            <!-- 0:RGGB, 1:GRBG, 2:GBRG, 3:BGGR, 4:RGB -->
+            <sensor.info.colorFilterArrangement value="2"/>
+
+            <lens.facing value="1"/>
+            <lens.info.availableApertures value="2.5"/>
+            <lens.info.availableFilterDensities value="0.0"/>
+            <lens.info.availableFocalLengths value="4.28"/>
+            <lens.info.hyperfocalDistance value="0.0"/>
+            <lens.info.minimumFocusDistance value="0.1"/>
+            <lens.info.shadingMapSize value="0,0"/>
+            <!-- 0:UNCALIBRATED, 1:APPROXIMATE, 2:CALIBRATED -->
+            <lens.info.focusDistanceCalibration value="1"/>
+
+            <!-- raw, yuv, jpeg -->
+            <request.maxNumOutputStreams value="0,1,0"/>
+            <request.pipelineMaxDepth value="6"/>
+            <!-- 0:backward, 1:manual_sensor, 2:manual_pso_processing, 3:raw, 4:zsl, 5:read_sensor_settings, 6:burst_capture -->
+            <request.availableCapabilities value="0"/>
+
+            <jpeg.maxSize value="11985408"/>  <!-- 3264*2448*1.5 -->
+            <jpeg.availableThumbnailSizes value="0,0,384,216,384,288"/> <!-- INCREASING ORDER -->
+
+            <!-- 0:off, 1:fast, 2:high_quality, 3:zero_shutter_lag -->
+            <edge.availableEdgeModes value="0"/>
+            <!-- 0:off, 1:fast, 2:high_quality -->
+            <hotPixel.availableHotPixelModes value="1"/>
+            <!-- 0:off, 1:fast, 2:high_quality, 3:minimal, 4:zero_shutter_lag -->
+            <noiseReduction.availableNoiseReductionModes value="0"/>
+            <tonemap.maxCurvePoints value="1024"/>
+            <!-- 0:contrast_curve, 1:fast, 2:high_quality, 3:gamma_value, 4:preset_curve -->
+            <tonemap.availableToneMapModes value="1,2"/>
+
+            <!-- 0:limited, 1:full, 2:legacy, 3:level3 -->
+            <info.supportedHardwareLevel value="0"/>
+            <!-- 0:per-frame, -1:unknown, other positive number:frame count -->
+            <sync.maxLatency value="-1"/>
+        </StaticMetadata>
+
+        <supportedTuningConfig value="NORMAL,VIDEO,imx185,
+                                      STILL_CAPTURE,VIDEO,imx185"/>
+
+        <supportedISysSizes value="1920x1080,1920x1088,3264x2448"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12V32,V4L2_PIX_FMT_YUYV420_V32,V4L2_PIX_FMT_SGRBG10V32"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <isaScaleRawConfig value="V4L2_PIX_FMT_SGRBG12V32,1920x1088"/> <!-- change to 3264x2448 for testing full size -->
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+
+        <enableAIQ value="true"/>
+        <cITMaxMargin value="8"/> <!--coarse integration time max margin -->
+        <lensName value="ak7375 9-000c"/>
+        <lensHwType value="LENS_VCM_HW"/>
+        <exposureLag value="2"/>
+
+        <graphSettingsFile value="graph_settings_imx355.xml"/>
+        <enablePSysProcessor value="true"/>
+    </Sensor>
+</CameraSettings>

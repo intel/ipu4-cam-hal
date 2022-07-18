@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2018 Intel Corporation
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<graph_settings>
+    <sensor_modes sensor_name="ov9281" csi_port="0" metadata="0" interlaced="0" bayer_order="GRBG">
+        <available_bit_per_pixel>
+            <bpp value="10"/>
+            <bpp value="8"/>
+        </available_bit_per_pixel>
+        <pll_configs>
+            <pll_config id="0" pixel_rate="600000000" pixel_rate_csi="599680000" bpp="10"/>
+            <pll_config id="1" pixel_rate="600000000" pixel_rate_csi="374800000" bpp="8"/>
+            <pll_config id="2" pixel_rate="600000000" pixel_rate_csi="299840000" bpp="10"/>
+        </pll_configs>
+        <sensor_mode name="1280x800_r" id="0" width="1280" height="800" min_fll="1660" min_llp="6024" fps="120.0">
+            <pixel_array>
+                <input width="1280" height="800" left="0" top="0"/>
+                <output width="1280" height="800" left="0" top="0"/>
+            </pixel_array>
+            <binner h_factor="1" v_factor="1">
+                <input width="1280" height="800" left="0" top="0"/>
+                <output width="1280" height="800" left="0" top="0"/>
+            </binner>
+            <scaler num_factor="16" denom_factor="16">
+                <input width="1280" height="800" left="0" top="0"/>
+                <output width="1280" height="800" left="0" top="0"/>
+            </scaler>
+        </sensor_mode>
+    </sensor_modes>
+    <!-- preview 1280x800 ull/hlc pipe-->
+    <settings key="9500" id="100012" op_mode="ULL" active_outputs="1">
+        <sensor mode_id="1280x800_r" analogue_gain="100" exposure="500">
+            <port_0 width="1280" height="800" format="RG10"/>
+        </sensor>
+        <video0 width="1280" height="800" stream_id="60001"/>
+        <csi_be_soc>
+            <output width="1280" height="800" format="BA10"/>
+        </csi_be_soc>
+        <video_isa_hq_4k_pre_gdc stream_id="60001">
+            <!-- explicitly specify bpl(stride) to overwrite calculated one for isl_inputcrop-->
+            <input width="1280" height="800" format="BA10" bpl="2560"/>
+            <ipu_intermediate width="1280" height="800" format="V420"/>
+            <!-- resolution info -->
+            <bxt_isl_inputcrop>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </bxt_isl_inputcrop>
+            <bxt_norm_lin>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </bxt_norm_lin>
+            <bxt_wb>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <bxt_bnlm>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_inputscaler enabled="0"/>
+            <bxt_blc enabled="1"/>
+            <bxt_wb enabled="1"/>
+            <xnr_dss enabled="1"/>
+            <bxt_vcsc enabled="1"/>
+            <bxt_vcud enabled="1"/>
+            <!-- metadata -->
+            <bxt_bnlm metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+        </video_isa_hq_4k_pre_gdc>
+        <video_hq_4k_post_gdc stream_id="60001">
+            <input width="1280" height="800" format="V420"/>
+            <non_scaled_output width="1280" height="800" format="NV12" peer="video0"/>
+            <noise_input enabled="0"/>
+            <scaled_output_0 enabled="0" />
+            <scaled_output_1 enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <gdc3_1>
+                <input width="1280" height="800" left="0" top="4" right="0" bottom="4"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </gdc3_1>
+            <tnr5_22>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_22>
+            <dma_cropper_mp>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_mp>
+
+            <!-- disabled kernels-->
+            <bxt_ofa_dp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <sc_outputscaler_dp enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </video_hq_4k_post_gdc>
+    </settings>
+
+    <!-- preview 1080p ll pipe-->
+    <settings key="9530" id="100003" op_mode="VIDEO_LL" active_outputs="1">
+        <sensor mode_id="1280x800_r" analogue_gain="100" exposure="500">
+            <port_0 width="1280" height="800" format="RG10"/>
+        </sensor>
+        <video0 width="1280" height="800" stream_id="60001"/>
+        <csi_be>
+            <output width="1280" height="800" format="bV0K"/>
+        </csi_be>
+        <video_ll_pre_gdc stream_id="60001">
+            <input width="1280" height="800" format="bV0K"/>
+            <pre_gdc_output width="1280" height="800" format="NV12" peer="video0"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <bxt_bnlm>
+                <input width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="800" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+
+            <!-- disabled kernels -->
+            <bxt_pixelformatter enabled="0"/>
+            <bxt_vcud enabled="0"/>
+            <bxt_ccm enabled="0"/>
+            <bxt_csc2 enabled="0"/>
+            <sc_iefd enabled="0"/>
+            <bxt_lsc enabled="0"/>
+            <bxt_dpc enabled="0"/>
+            <bxt_disparity enabled="0"/>
+            <bxt_applycorrection enabled="0"/>
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_inputscaler enabled="0"/>
+            <bxt_vcsc enabled="0"/>
+
+            <!-- metadata -->
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_bnlm metadata="1,0,0,0"/>
+        </video_ll_pre_gdc>
+    </settings>
+
+</graph_settings>
+

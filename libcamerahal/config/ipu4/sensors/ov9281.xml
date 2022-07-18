@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2018 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="ov9281" sensorType="raw" description="ov9281 raw">
+        <MediaCtlConfig id="0" ConfigMode="ULL" outputWidth="1280" outputHeight="800" format="V4L2_PIX_FMT_SGRBG10">
+
+            <link srcName="ov9281 pixel array a" srcPad="0" sinkName="ov9281 binner a" sinkPad="0" enable="true"/>
+            <link srcName="ov9281 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="5"/>
+
+            <format name="ov9281 pixel array a" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="ov9281 binner a" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="ov9281 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1280" height="800"/>
+            <format name="ov9281 binner a" pad="1" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="ov9281 pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ov9281 binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="VIDEO_LL" outputWidth="1280" outputHeight="800" format="V4L2_PIX_FMT_SGRBG10V32">
+
+            <link srcName="ov9281 pixel array a" srcPad="0" sinkName="ov9281 binner a" sinkPad="0" enable="true"/>
+            <link srcName="ov9281 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 CSI2 BE capture" sinkPad="0" enable="true"/>
+
+            <format name="ov9281 pixel array a" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="ov9281 binner a" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="ov9281 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1280" height="800"/>
+            <format name="ov9281 binner a" pad="1" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="1280" height="800" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="0" top="0" width="1280" height="800"/>
+
+            <videonode name="Intel IPU4 CSI2 BE capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="ov9281 pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ov9281 binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1280x800,0,0"/>
+
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <supportedAeExposureTimeRange value="ULL,30,33243,
+                                                 VIDEO_LL,28,33277"/>
+            <supportedAeGainRange value="ULL,0,75"/> <!--scene_mode,min_gain,max_gain -->
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAeMode value="AUTO,MANUAL"/>
+            <supportedVideoStabilizationModes value="ON,OFF"/>
+            <supportedSceneMode value="ULL,VIDEO_LL"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+            <supportedAwbMode value="AUTO,INCANDESCENT,FLUORESCENT,DAYLIGHT,FULL_OVERCAST,PARTLY_OVERCAST,SUNSET,VIDEO_CONFERENCE,MANUAL_CCT_RANGE,MANUAL_WHITE_POINT,MANUAL_GAIN,MANUAL_COLOR_TRANSFORM"/>
+        </StaticMetadata>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="ULL,VIDEO-ULL,imx274-ull,
+                                      VIDEO_LL,VIDEO-LL,imx274-ull"/>
+
+        <supportedISysSizes value="1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SRGGB10,V4L2_PIX_FMT_SGRBG10"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <enableAIQ value="true"/>
+        <dolVbpOffset value="96,98"/> <!-- DOL VBP offset values for low and high bytes -->
+        <lensName value="camera-pwm"/>
+        <lensHwType value="LENS_PWM_HW"/>
+        <lensCloseCode value="200"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <initialSkipFrame value="1"/>
+        <exposureLag value="1"/>
+        <ltmGainLag value="0"/>
+        <hdrExposureNum value="2"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <gainLag value="1"/>
+        <pipeSwitchDelayFrame value="60"/>
+        <custom3ALibraryName value="libcustomized_3a"/>
+        <customAicLibraryName value="libcustomized_aic"/>
+        <!-- for both 2M and 4K, llp 1052, fll 2284 -->
+        <supportedAeMultiExpRange value="SHS1,1936,2376,4,1166,1,0,2,
+                                         RHS1,1936,2376,6,1168,1,2,4,
+                                         SHS2,1936,2376,10,2280,1,4,4,
+                                         SHS1,3868,4536,6,84,1,0,2,
+                                         RHS1,3868,4536,8,86,1,2,6,
+                                         SHS2,3868,4536,14,2280,1,6,4"/> <!--tag,resolution width,resolution height,min value, max_value,step,lower bound,upper bound-->
+        <graphSettingsFile value="graph_settings_ov9281.xml"/>
+    </Sensor>
+</CameraSettings>

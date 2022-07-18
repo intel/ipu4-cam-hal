@@ -1,0 +1,1800 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2016-2018 Intel Corporation
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<graph_descriptor>
+    <nodes>
+        <node name="sensor" type="source" vflip="0" hflip="0">
+            <port id="0" name="port_0" type="port" direction="1"/>
+        </node>
+
+        <node name="csi_be_soc" type="hw" stream_id="0" subsystem="isys">
+            <!-- ports -->
+            <port name="input" id="0" direction="0"/>
+            <port name="output" id="1" direction="1"/>
+            <!-- ports end -->
+        </node>
+
+        <node name="csi_be" type="hw" stream_id="0" subsystem="isys">
+            <!-- ports -->
+            <port name="input" id="0" direction="0"/>
+            <port name="output" id="1" direction="1"/>
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" rcb="1"/>
+            <!-- ports end -->
+        </node>
+
+        <node name="isa" type="program_group" pg_id="0" stream_id="0" subsystem="isys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="0" direction="0"/>
+            <port name="non_scaled_output" id="1" direction="1" format="bV0K"/>
+            <port name="scaled_output" id="2" direction="1" format="y032"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="0"/>
+            <!-- Disabled because is not supported in IPU4 -->
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="1" enabled="0"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="2"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="3"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="5"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="6"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="7"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="8"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="9"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="10"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="11" enabled="0"/>
+            <!-- video path -->
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="12" branch_point="1"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" rcb="1" id="13"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="14" rcb="1" sink_port="2"/>
+            <!-- still path -->
+            <kernel name="bxt_cropstills" pal_uuid="34611" id="15" rcb="1" sink_port="1" restore_point="1"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="isa_cnl" type="program_group" pg_id="0" stream_id="0" subsystem="isys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="0" direction="0"/>
+            <port name="non_scaled_output" id="1" direction="1" format="bV0K"/>
+            <port name="scaled_output" id="2" direction="1" format="y032"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" id="0"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="1"/>
+            <!-- Disabled because is not supported in IPU4 -->
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="2" enabled="0"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="3"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="4"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="5"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="6"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="7"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="8"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="9"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="10"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="11"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="12"/>
+            <kernel name="bxt_pafstatistics" pal_uuid="21380" id="13"/>
+            <kernel name="bxt_dpc_1_1" pal_uuid="51918" id="14" branch_point="1"/>
+            <kernel name="bxt_crop_bayer_a" pal_uuid="34076" id="15"/>
+            <kernel name="bxt_cropstills" pal_uuid="34611" id="16" rcb="1" sink_port="1"/>
+            <kernel name="bxt_inputscalerv2" pal_uuid="10913" rcb="1" id="17" restore_point="1"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="18"/>
+            <kernel name="bxt_crop_yuv_a" pal_uuid="9082" id="19"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="20" rcb="1" sink_port="2"/>
+
+            <!-- kernels end -->
+        </node>
+
+        <node name="psys_isl_cnl" type="program_group" pg_id="127" stream_id="60000" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="scaled_output" id="4" direction="1" format="y032"/>
+            <port name="non_scaled_output" id="5" direction="1" format="bV0K"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" id="0"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="1"/>
+            <!-- Disabled because is not supported in IPU4 -->
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="2" enabled="0"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="3"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="4"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="5"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="6"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="7"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="8"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="9"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="10"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="11"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="12"/>
+            <kernel name="bxt_dpc_1_1" pal_uuid="51918" id="13"/>
+            <kernel name="bxt_pafstatistics" pal_uuid="21380" id="14" branch_point="1"/>
+            <kernel name="bxt_crop_bayer_a" pal_uuid="34076" id="15"/>
+            <kernel name="bxt_cropstills" pal_uuid="34611" id="16" rcb="1" sink_port="5"/>
+            <kernel name="bxt_inputscalerv2" pal_uuid="10913" rcb="1" id="17" restore_point="1"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="18"/>
+            <kernel name="bxt_crop_yuv_a" pal_uuid="9082" id="19"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="20" rcb="1" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_isa" type="program_group" pg_id="127" stream_id="60002" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="scaled_output" id="4" direction="1" format="y032"/>
+            <port name="non_scaled_output" id="5" direction="1" format="bV0K"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_norm_lin" pal_uuid="64791"  id="0"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517"  id="1"/>
+            <kernel name="bxt_linearization" pal_uuid="33288"  id="2"/>
+            <kernel name="bxt_lsc" pal_uuid="53711"  id="3"/>
+            <kernel name="bxt_dpc" pal_uuid="23342"  id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661"  id="5"/>
+            <kernel name="bxt_disparity" pal_uuid="55093"  id="6"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482"  id="7"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104"  id="8"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650"  id="9"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593"  id="10" enabled="0"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985"  id="11" enabled="0" branch_point="1"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" rcb="1" id="12"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680"  id="13"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="14" rcb="1" sink_port="4"/>
+            <kernel name="bxt_cropstills" pal_uuid="34611" id="15" rcb="1" sink_port="5" restore_point="1"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_isa_preview" type="program_group" pg_id="127" stream_id="60002" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="scaled_output" id="4" direction="1" format="y032"/>
+            <port name="non_scaled_output" id="5" direction="1" format="bV0K"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_norm_lin" pal_uuid="64791"  id="0"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517"  id="1"/>
+            <kernel name="bxt_linearization" pal_uuid="33288"  id="2"/>
+            <kernel name="bxt_lsc" pal_uuid="53711"  id="3"/>
+            <kernel name="bxt_dpc" pal_uuid="23342"  id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661"  id="5"/>
+            <kernel name="bxt_disparity" pal_uuid="55093"  id="6"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482"  id="7"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104"  id="8"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650"  id="9"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593"  id="10" enabled="0"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985"  id="11" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" rcb="1" id="12"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680"  id="13"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="14" rcb="1" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+        <node name="video_isa_still" type="program_group" pg_id="127" stream_id="60000" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="scaled_output" id="4" direction="1" format="y032"/>
+            <port name="non_scaled_output" id="5" direction="1" format="bV0K"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_norm_lin" pal_uuid="64791"  id="0"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517"  id="1"/>
+            <kernel name="bxt_linearization" pal_uuid="33288"  id="2"/>
+            <kernel name="bxt_lsc" pal_uuid="53711"  id="3"/>
+            <kernel name="bxt_dpc" pal_uuid="23342"  id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661"  id="5"/>
+            <kernel name="bxt_disparity" pal_uuid="55093"  id="6"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482"  id="7"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104"  id="8"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650"  id="9"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593"  id="10" enabled="0"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985"  id="11" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" rcb="1" id="12"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680"  id="13"/>
+            <kernel name="bxt_cropstills" pal_uuid="34611" id="14" rcb="1" sink_port="5"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_pre_gdc_hq_vcr2" type="program_group" pg_id="148" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="1"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="2"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="3"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="4"/>
+            <kernel name="sc_iefd_v2" pal_uuid="7320" id="5"/>
+            <kernel name="bxt_vcr2" pal_uuid="5194" metadata="1,0,0,0" id="6"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="7"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="8"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="9"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="10"/>
+            <kernel name="bxt_csc2" pal_uuid="39659" id="11" enabled="0"/>
+            <kernel name="bxt_dpcm_encode" pal_uuid="11653" id="12"/>
+            <kernel name="bxt_dpcm_decode" pal_uuid="16046" id="13"/>
+            <kernel name="bxt_xnr4_m" pal_uuid="19837" id="14"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="15"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="16" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_post_gdc_v2_mbr" type="program_group" pg_id="172" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_post_gdc_v2_mbr>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </video_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_post_gdc_v2_mbr>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </video_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_post_gdc_v2_mbr>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </video_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_post_gdc_v2_mbr>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </video_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_post_gdc_v2_mbr>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </video_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_post_gdc_v2_mbr>
+                                 <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </video_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- rcb: Indicates that the kernel is resolution changing block. In
+                 practice this is a kernel that is able to change the resolution in
+                 the pipe. Resolution changes are done in settings.
+
+                 branch_point: Indicates a point where kernels branch for
+                 different outputs. This where the restore point is pointing
+                 when we continue calculating resolution history for a given
+                 branch.
+
+                 restore_point: this is where we restore resolution history
+                 from the branch point and continue.
+
+                 sink_port: this is the end point for a branch. Resolution
+                 history is saved for the given sink.
+
+                 id: Sets the kernel ordering. Affects the resolution history
+                 propagation and the internal memory representation.
+                 -->
+            <kernel name="gdc3_1_1" pal_uuid="35089" id="0"/>
+            <kernel name="bxt_tnr5v1" pal_uuid="43225" id="1" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" id="2"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="3" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="4"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="5"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="6" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="7"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="8"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="9" sink_port="7"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="still_pre_gdc_xnr4_v3_vcr2" type="program_group" pg_id="150" stream_id="60000" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="1"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="2"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="3"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="4"/>
+            <kernel name="sc_iefd_v2" pal_uuid="7320" id="5"/>
+            <kernel name="bxt_vcr2" pal_uuid="5194" metadata="1,0,0,0" id="6"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="7"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="8"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="9"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="10"/>
+            <kernel name="bxt_csc2" pal_uuid="39659" id="11"/>
+            <kernel name="bxt_dpcm_encode" pal_uuid="11653" id="12"/>
+            <kernel name="bxt_dpcm_decode" pal_uuid="16046" id="13"/>
+            <kernel name="bxt_xnr4_mh" pal_uuid="47865" id="14"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="15"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="16" enabled="0" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="still_post_gdc_v2_mbr" type="program_group" pg_id="173" stream_id="60000" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <still_post_gdc_v2_mbr>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </still_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <still_post_gdc_v2_mbr>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </still_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <still_post_gdc_v2_mbr>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </still_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <still_post_gdc_v2_mbr>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </still_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <still_post_gdc_v2_mbr>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </still_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <still_post_gdc_v2_mbr>
+                                 <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </still_post_gdc_v2_mbr>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- rcb: Indicates that the kernel is resolution changing block. In
+                 practice this is a kernel that is able to change the resolution in
+                 the pipe. Resolution changes are done in settings.
+
+                 branch_point: Indicates a point where kernels branch for
+                 different outputs. This where the restore point is pointing
+                 when we continue calculating resolution history for a given
+                 branch.
+
+                 restore_point: this is where we restore resolution history
+                 from the branch point and continue.
+
+                 sink_port: this is the end point for a branch. Resolution
+                 history is saved for the given sink.
+
+                 id: Sets the kernel ordering. Affects the resolution history
+                 propagation and the internal memory representation.
+                 -->
+            <kernel name="gdc3_1_1" pal_uuid="35089" id="0" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" restore_point="1" id="1"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="2" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="3"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="4"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="5" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="6"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="7"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="8" sink_port="7"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video hdr pre-proc Program Groups -->
+        <node name="video_hdr_pre_proc" type="program_group" pg_id="1005" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_preproc" id="5" direction="1"/>
+            <port name="scaled_output" id="4" direction="1" enabled="0"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="see" pal_uuid="15281" metadata="1,0,0,0" id="1"/>
+            <kernel name="xnr_dss" pal_uuid="42418" metadata="1,0,0,0" id="2"/>
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" id="3"/>
+            <kernel name="norm_lin_dss" pal_uuid="48425" id="4"/>
+            <kernel name="linearizationwb_dss" pal_uuid="41930" id="5"/>
+            <kernel name="drc_1" pal_uuid="29204" id="6"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="7"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="8"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="9"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="10"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="11"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="12"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="13" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="14"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="15"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="16"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="17"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="18"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="19" sink_port="5"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video hdr stats Program Groups -->
+        <node name="video_hdr_stats" type="program_group" pg_id="1013" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_preproc" id="5" direction="1"/>
+            <port name="scaled_output" id="4" direction="1" enabled="0"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="see" pal_uuid="15281" metadata="1,0,0,0" id="1"/>
+            <kernel name="xnr_dss" pal_uuid="42418" metadata="1,0,0,0" id="2"/>
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" id="3"/>
+            <kernel name="norm_lin_dss" pal_uuid="48425" id="4"/>
+            <kernel name="linearizationwb_dss" pal_uuid="41930" id="5"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="6"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="7"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="8"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="9"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="10"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="11"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="12" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="13"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="14"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="15"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="16"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="17"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="18" sink_port="5"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video ull pre-proc Program Groups -->
+        <node name="video_ull_pre_proc" type="program_group" pg_id="1005" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_preproc" id="5" direction="1"/>
+            <port name="scaled_output" id="4" direction="1" enabled="0"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="see" pal_uuid="15281" metadata="1,0,0,0" id="1"/>
+            <kernel name="xnr_dss" pal_uuid="42418" metadata="1,0,0,0" id="2"/>
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" id="3"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="4"/>
+            <kernel name="linearizationdg_dss" pal_uuid="38566" id="5"/>
+            <kernel name="drc_1" pal_uuid="29204" id="6"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="7"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="8"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="9"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="10"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="11"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="12"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="13" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="14"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="15"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="16"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="17"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="18"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="19" sink_port="5"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video ll pre-gdc Program Groups -->
+        <node name="video_ll_pre_gdc" type="program_group" pg_id="1004" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="pre_gdc_output" id="4" direction="1" format="NV12"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_pixelformatter" pal_uuid="15205" id="1"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="2"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="3"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="4"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="5"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="6"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="7"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="8" enabled="0"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="9"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="10"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="11"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="12"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="13"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="14"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="15"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="16"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="17"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="18"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="19"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="20"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="21"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="22"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="23"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="24"/>
+            <kernel name="bxt_csc2" pal_uuid="39659" id="25"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="26" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video hq_ns pre-gdc Program Groups -->
+        <node name="video_hq_ns_pre_gdc" type="program_group" pg_id="1007" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <port name="noise_output" id="5" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="0"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="1"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="2"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="3"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="4"/>
+            <kernel name="bxt_pixprecadapter_postvcr" pal_uuid="64780" metadata="1,0,0,0" id="5" />
+            <kernel name="bxt_vcr" pal_uuid="21834" metadata="1,0,0,0" id="6" />
+            <kernel name="bxt_acm" pal_uuid="13506" id="7"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="8"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="9"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="10"/>
+            <kernel name="bxt_pixprecadapter_pregdc" pal_uuid="12215" metadata="1,0,0,0" id="11" />
+            <kernel name="bxt_pixprecadapter_precsc2" pal_uuid="60774" id="12" />
+            <kernel name="bxt_csc2" pal_uuid="39659" id="13"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="14" branch_point="1"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="15" sink_port="4"/>
+            <kernel name="exy" pal_uuid="35008" metadata="1,0,0,0" id="16" restore_point="1" sink_port="5"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video drc pre-gdc Program Groups -->
+        <node name="video_drc_pre_gdc" type="program_group" pg_id="1014" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="0"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="1"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="2"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="3"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="4"/>
+            <kernel name="bxt_pixprecadapter_postvcr" pal_uuid="64780" metadata="1,0,0,0" id="5" />
+            <kernel name="bxt_vcr" pal_uuid="21834" metadata="1,0,0,0" id="6" />
+            <kernel name="bxt_acm" pal_uuid="13506" id="7"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="8"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="9"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="10"/>
+            <kernel name="bxt_pixprecadapter_pregdc" pal_uuid="12215" metadata="1,0,0,0" id="11" />
+            <kernel name="bxt_pixprecadapter_precsc2" pal_uuid="60774" id="12" />
+            <kernel name="bxt_csc2" pal_uuid="39659" id="13"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="14"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="15"/>
+            <kernel name="exy" pal_uuid="35008" metadata="1,0,0,0" id="16"/>
+            <kernel name="drc_1" pal_uuid="29204" id="17" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video hq_ns proc-gdc Program Groups -->
+        <node name="video_hq_ns_post_gdc" type="program_group" pg_id="1008" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="noise_input" id="12" direction="0"/>
+
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                 <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- rcb: Indicates that the kernel is resolution changing block. In
+                 practice this is a kernel that is able to change the resolution in
+                 the pipe. Resolution changes are done in settings.
+
+                 branch_point: Indicates a point where kernels branch for
+                 different outputs. This where the restore point is pointing
+                 when we continue calculating resolution history for a given
+                 branch.
+
+                 restore_point: this is where we restore resolution history
+                 from the branch point and continue.
+
+                 sink_port: this is the end point for a branch. Resolution
+                 history is saved for the given sink.
+
+                 id: Sets the kernel ordering. Affects the resolution history
+                 propagation and the internal memory representation.
+                 -->
+
+            <!-- kernels -->
+            <kernel name="gdc3_1" pal_uuid="15925" id="0"/>
+            <kernel name="tnr5_21" pal_uuid="7824" metadata="1,0,0,0" id="1" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" restore_point="1" id="2"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="3" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="4"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="5"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="6" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="7"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="8"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="9" sink_port="7"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video Program Groups -->
+        <node name="video_pre_gdc" type="program_group" pg_id="122" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1" format="V420"/>
+            <!-- ports end -->
+            <!-- kernels -->
+            <kernel name="bxt_xnr4_m" pal_uuid="19837" id="0"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="1"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="2"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="3"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="4"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="5"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="6"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="7"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="8"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="9"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="10" sink_port="4"/>
+            <!-- kernels end -->
+
+        </node>
+        <node name="video_post_gdc" type="program_group" pg_id="114" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_post_gdc>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </video_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_post_gdc>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </video_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_post_gdc>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </video_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_post_gdc>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </video_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_post_gdc>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </video_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_post_gdc>
+                                 <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </video_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- rcb: Indicates that the kernel is resolution changing block. In
+                 practice this is a kernel that is able to change the resolution in
+                 the pipe. Resolution changes are done in settings.
+
+                 branch_point: Indicates a point where kernels branch for
+                 different outputs. This where the restore point is pointing
+                 when we continue calculating resolution history for a given
+                 branch.
+
+                 restore_point: this is where we restore resolution history
+                 from the branch point and continue.
+
+                 sink_port: this is the end point for a branch. Resolution
+                 history is saved for the given sink.
+
+                 id: Sets the kernel ordering. Affects the resolution history
+                 propagation and the internal memory representation.
+                 -->
+            <kernel name="gdc3" pal_uuid="14376" rcb="1" id="0"/>
+            <kernel name="bxt_tnr5v1" pal_uuid="43225" id="1" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" restore_point="1" id="2"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="3" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="4"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="5"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="6" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="7"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="8"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="9" sink_port="7"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_hp_pre_gdc" type="program_group" pg_id="1002" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="1"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="2"/>
+            <kernel name="drc_1" pal_uuid="29204" id="3"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="5"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="6"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="7"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="8"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="9"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="10" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="11"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="12"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="13"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="14"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="15"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="16"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="17"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="18"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="19"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="20"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="21"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="22"/>
+            <kernel name="bxt_vcr" pal_uuid="21834" metadata="1,0,0,0" id="23" />
+            <kernel name="bxt_acm" pal_uuid="13506" id="24"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="25"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="26"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="27"/>
+            <kernel name="hdr_pwldecomp_1" pal_uuid="41666" id="28"/>
+            <kernel name="hdr_sqrtcomp_2" pal_uuid="31478" id="29"/>
+            <kernel name="hdr_wb_1" pal_uuid="23040" id="30"/>
+            <kernel name="hdr_blc_1" pal_uuid="40166" id="31" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_hp_drc2_pre_gdc" type="program_group" pg_id="1016" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="1"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="2"/>
+            <kernel name="drc_2" pal_uuid="4091" id="3"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="5"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="6"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="7"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="8"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="9"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="10" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="11"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="12"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="13"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="14"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="15"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="16"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="17"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="18"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="19"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="20"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="21"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="22"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="23"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="24"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="25"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="26"/>
+            <kernel name="bxt_isl_inputcrop" pal_uuid="42521" id="27"/>
+            <kernel name="hdr_sqrtcomp_3" pal_uuid="63941" id="28"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="29"/>
+            <kernel name="linear2hdr" pal_uuid="19752" id="30" sink_port="4"/>
+        </node>
+
+        <node name="video_hp_drc2_v2_pre_gdc" type="program_group" pg_id="1018" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="1"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="2"/>
+            <kernel name="drc_2" pal_uuid="4091" id="3"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="4"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="5"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="6"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="7"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="8"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="9"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="10" enabled="0"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="11"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="12"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="13"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="14"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="15"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="16"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="17"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="18"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="19"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="20"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="21"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="22"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="23"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="24"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="25"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="26"/>
+            <kernel name="bxt_isl_inputcrop" pal_uuid="42521" id="27"/>
+            <kernel name="hdr_sqrtcomp_3" pal_uuid="63941" id="28"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="29"/>
+            <kernel name="bxt_csc2" pal_uuid="39659" id="30"/>
+            <kernel name="cmf_1_0" pal_uuid="31652" id="31"/>
+            <kernel name="linear2hdr" pal_uuid="19752" id="32" sink_port="4"/>
+        </node>
+
+        <node name="video_hdr_hp_pre_gdc" type="program_group" pg_id="1015" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="6" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="dol_parser" pal_uuid="44843"  id="0"/>
+            <kernel name="bxt_wb" pal_uuid="32398" id="1"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="2"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="3"/>
+            <kernel name="drc_1" pal_uuid="29204" id="4"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="5"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="6"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="7"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="8"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="9"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="10"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="11"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="12"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="13"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="14"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="15"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="16"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="17"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="18"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="19"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="20"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="21"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="22"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="23"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="24"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="25"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="26"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="27"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="28"/>
+            <kernel name="hdr_stitch_1w" pal_uuid="15195" id="29" sink_port="6"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="vhdr_pregdc_hp_2fr_v2" type="program_group" pg_id="1017" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <!-- ports end -->
+
+            <!-- Mappings for PG kernel ID's and PAL UUID's -->
+            <kernel name="dol_parser" pal_uuid="44843"  id="0"/>
+            <kernel name="bxt_wb" pal_uuid="32398" id="1"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791" id="2"/>
+            <kernel name="bxt_linearization" pal_uuid="33288" id="3"/>
+            <kernel name="drc_2" pal_uuid="4091" id="4"/>
+            <kernel name="hdrstats_1" pal_uuid="23432" id="5"/>
+            <kernel name="bxt_blc" pal_uuid="40661" id="6"/>
+            <kernel name="bxt_lsc" pal_uuid="53711" id="7"/>
+            <kernel name="bxt_dpc" pal_uuid="23342" id="8"/>
+            <kernel name="bxt_disparity" pal_uuid="55093" id="9"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482" id="10"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517" id="11"/>
+            <kernel name="bxt_inputscaler" pal_uuid="29163" id="12"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104" id="13"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650" id="14"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593" id="15"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985" id="16"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680" id="17"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="18"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="19"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="20"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="21"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="22"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="23"/>
+            <kernel name="bxt_acm" pal_uuid="13506" id="24"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="25"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="26"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="27"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="28"/>
+            <kernel name="hdr_stitch_1w" pal_uuid="15195" id="29" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_hp_post_gdc" type="program_group" pg_id="1003" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hp_post_gdc>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </video_hp_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hp_post_gdc>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </video_hp_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hp_post_gdc>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </video_hp_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hp_post_gdc>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </video_hp_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hp_post_gdc>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </video_hp_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hp_post_gdc>
+                                 <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </video_hp_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- rcb: Indicates that the kernel is resolution changing block. In
+                 practice this is a kernel that is able to change the resolution in
+                 the pipe. Resolution changes are done in settings.
+
+                 branch_point: Indicates a point where kernels branch for
+                 different outputs. This where the restore point is pointing
+                 when we continue calculating resolution history for a given
+                 branch.
+
+                 restore_point: this is where we restore resolution history
+                 from the branch point and continue.
+
+                 sink_port: this is the end point for a branch. Resolution
+                 history is saved for the given sink.
+
+                 id: Sets the kernel ordering. Affects the resolution history
+                 propagation and the internal memory representation.
+                 -->
+            <kernel name="gdc3_1" pal_uuid="15925" id="0"/>
+            <kernel name="tnr5_25" pal_uuid="41522" id="1" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" restore_point="1" id="2"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="3" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="4"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="5"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="6" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="7"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="8"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="9" sink_port="7"/>
+           <kernel name="gdc3" pal_uuid="14376" id="10" enabled="0"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Video isa_hq_4k pre-gdc Program Groups -->
+        <node name="video_isa_hq_4k_pre_gdc" type="program_group" pg_id="1012" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <!-- ports end -->
+
+            <!-- New kernel for input crop -->
+            <kernel name="bxt_isl_inputcrop" pal_uuid="42521"  id="0"/>
+
+            <!-- Inherited kernels from video psys ISA PG -->
+            <kernel name="bxt_norm_lin" pal_uuid="64791"  id="1"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517"  id="2"/>
+            <kernel name="linearizationdg_dss" pal_uuid="38566"  id="3"/>
+            <kernel name="bxt_lsc" pal_uuid="53711"  id="4"/>
+            <kernel name="bxt_dpc" pal_uuid="23342"  id="5"/>
+            <kernel name="bxt_blc" pal_uuid="40661"  id="6"/>
+            <kernel name="bxt_disparity" pal_uuid="55093"  id="7"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482"  id="8"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104"  id="9"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650"  id="10"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593"  id="11" enabled="0"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985"  id="12" enabled="0"/>
+            <kernel name="bxt_inputscaler_v2" pal_uuid="10913" rcb="1" id="13"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680"  id="14"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="15" rcb="1"/>
+
+            <!-- Inherited kernels from video pregdc hq ns PG -->
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="16"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="17"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="18"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="19"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="20"/>
+            <kernel name="bxt_pixprecadapter_postvcr" pal_uuid="64780" metadata="1,0,0,0" id="21" />
+            <kernel name="bxt_vcr" pal_uuid="21834" metadata="1,0,0,0" id="22" />
+            <kernel name="bxt_acm" pal_uuid="13506" id="23"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="24"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="25"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="26"/>
+            <kernel name="bxt_pixprecadapter_pregdc" pal_uuid="12215" metadata="1,0,0,0" id="27" />
+            <kernel name="bxt_pixprecadapter_precsc2" pal_uuid="60774" id="28" />
+            <kernel name="bxt_csc2" pal_uuid="39659" id="29"/>
+            <kernel name="sc_iefd" pal_uuid="2442" id="30"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="31"/>
+
+            <!-- Added kernels during PG integration -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="32" enabled="0"/>
+            <kernel name="xnr_dss" pal_uuid="42418" metadata="1,0,0,0" id="33" enabled="0" sink_port="4"/>
+            <!-- kernels end -->
+        </node>
+
+        <node name="video_isa_hq_4k_pre_gdc_ksl" type="program_group" pg_id="1012" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1"/>
+            <kernel name="bxt_isl_inputcrop" pal_uuid="42521"  id="0"/>
+            <kernel name="bxt_norm_lin" pal_uuid="64791"  id="1"/>
+            <kernel name="bxt_gridbaseob" pal_uuid="46517"  id="2"/>
+            <kernel name="linearizationdg_dss" pal_uuid="38566"  id="3"/>
+            <kernel name="bxt_lsc" pal_uuid="53711"  id="4"/>
+            <kernel name="bxt_dpc" pal_uuid="23342"  id="5"/>
+            <kernel name="bxt_blc" pal_uuid="40661"  id="6"/>
+            <kernel name="bxt_disparity" pal_uuid="55093"  id="7"/>
+            <kernel name="bxt_applycorrection" pal_uuid="45482"  id="8"/>
+            <kernel name="bxt_awbstatistics" pal_uuid="10104"  id="9"/>
+            <kernel name="bxt_af_awb_fr_statistics" pal_uuid="21650"  id="10"/>
+            <kernel name="bxt_3a_ccm" pal_uuid="15593"  id="11" enabled="0"/>
+            <kernel name="bxt_aestatistics" pal_uuid="21985"  id="12" enabled="0"/>
+            <kernel name="bxt_inputscaler_v2" pal_uuid="10913" rcb="1" id="13"/>
+            <kernel name="bxt_vcsc" pal_uuid="60680"  id="14"/>
+            <kernel name="bxt_cropvideo" pal_uuid="42997" id="15" rcb="1"/>
+            <kernel name="bxt_bnlm" pal_uuid="54605" id="16"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" id="17"/>
+            <kernel name="bxt_vcud" pal_uuid="17897" id="18"/>
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" id="19"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="20"/>
+            <kernel name="bxt_pixprecadapter_postvcr" pal_uuid="64780" metadata="1,0,0,0" id="21" />
+            <kernel name="bxt_vcr" pal_uuid="21834" metadata="1,0,0,0" id="22" />
+            <kernel name="bxt_acm" pal_uuid="13506" id="23"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="24"/>
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="25"/>
+            <kernel name="bxt_csc" pal_uuid="31704" id="26"/>
+            <kernel name="bxt_pixprecadapter_pregdc" pal_uuid="12215" metadata="1,0,0,0" id="27" />
+            <kernel name="bxt_pixprecadapter_precsc2" pal_uuid="60774" id="28" />
+            <kernel name="bxt_csc2" pal_uuid="39659" id="29"/>
+            <kernel name="sc_iefd" pal_uuid="7320" id="30"/>
+            <kernel name="bxt_dvsstatistics" pal_uuid="10794" id="31"/>
+            <kernel name="bxt_wb" pal_uuid="32398" id="32" enabled="0"/>
+            <kernel name="xnr_dss" pal_uuid="42418" metadata="1,0,0,0" id="33" enabled="0"/>
+            <kernel name="vca_vcr2" pal_uuid="5194" id="34" enabled="0"/>
+            <kernel name="pixcrop_bayer_a" pal_uuid="34076" rcb="1" id="35" enabled="1"/>
+            <kernel name="pixcrop_yuv_a" pal_uuid="9082" rcb="1" id="36" enabled="1" sink_port="4"/>
+        </node>
+        <!-- Video hq_4k post-gdc Program Groups -->
+        <node name="video_hq_4k_post_gdc" type="program_group" pg_id="1011" stream_id="60001" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="noise_input" id="12" direction="0"/>
+
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1" enabled="0">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <video_hq_ns_post_gdc>
+                                 <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </video_hq_ns_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- rcb: Indicates that the kernel is resolution changing block. In
+                 practice this is a kernel that is able to change the resolution in
+                 the pipe. Resolution changes are done in settings.
+
+                 branch_point: Indicates a point where kernels branch for
+                 different outputs. This where the restore point is pointing
+                 when we continue calculating resolution history for a given
+                 branch.
+
+                 restore_point: this is where we restore resolution history
+                 from the branch point and continue.
+
+                 sink_port: this is the end point for a branch. Resolution
+                 history is saved for the given sink.
+
+                 id: Sets the kernel ordering. Affects the resolution history
+                 propagation and the internal memory representation.
+                 -->
+
+            <!-- Inherited kernels from video postgdc hq ns PG -->
+            <kernel name="gdc3_1" pal_uuid="15925" id="0"/>
+            <!-- TNR kernel use version 522 instead of 5v1 in video postgdc hq ns -->
+            <kernel name="tnr5_22" pal_uuid="21293" metadata="1,0,0,0" id="1"/>
+            <kernel name="see" pal_uuid="15281" metadata="1,0,0,0" id="2" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" restore_point="1" id="3"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="4" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="5"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="6"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="7" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="8"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="9"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="10" sink_port="7"/>
+            <!-- kernels end -->
+        </node>
+
+        <!-- Still Program Groups -->
+        <node name="still_pre_gdc" type="program_group" pg_id="136" stream_id="60000" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="ipu_intermediate" id="4" direction="1" format="V420"/>
+            <!-- ports end -->
+            <!-- kernels -->
+            <kernel name="bxt_wb" pal_uuid="32398" id="0"/>
+            <kernel name="bxt_rynr_splitter" pal_uuid="61356" metadata="1,0,0,0" id="1"/> <!-- VPREGDC_KERNEL_ID_RYNR_SPLITTER -->
+            <kernel name="bxt_rynr_collector" pal_uuid="28476" metadata="1,0,0,0" id="2"/> <!-- VPREGDC_KERNEL_ID_RYNR_COLLECTOR -->
+            <kernel name="bxt_bnlm" pal_uuid="54605" metadata="1,0,0,0" id="3"/> <!-- VPREGDC_KERNEL_ID_BNLM -->
+            <kernel name="bxt_vcud" pal_uuid="17897" id="4"/>
+            <kernel name="bxt_demosaic" pal_uuid="18227" id="5"/>
+            <kernel name="bxt_ccm" pal_uuid="16559" id="6"/> <!-- VPREGDC_KERNEL_ID_CCM -->
+            <kernel name="bxt_acm" pal_uuid="13506" id="7"/> <!-- VPREGDC_KERNEL_ID_ACM -->
+            <kernel name="bxt_gammatm" pal_uuid="44304" id="8"/> <!-- VPREGDC_KERNEL_ID_GTM -->
+            <kernel name="bxt_csc" pal_uuid="31704" id="9"/> <!-- VPREGDC_KERNEL_ID_CSC_CDS -->
+            <kernel name="sc_iefd" pal_uuid="2442" id="10"/> <!-- VPREGDC_KERNEL_ID_IEFD -->
+            <kernel name="bxt_xnr4_mh" pal_uuid="47865" id="11"/>
+            <kernel name="bxt_csc2" pal_uuid="39659" id="12" sink_port="4"/> <!-- VPREGDC_KERNEL_ID_CSC_CDS -->
+            <!-- kernels end -->
+
+        </node>
+        <node name="still_post_gdc" type="program_group" pg_id="118" stream_id="60000" subsystem="psys" tuning_mode="0">
+            <!-- ports -->
+            <port name="input" id="3" direction="0"/>
+            <port name="non_scaled_output" id="6" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <still_post_gdc>
+                                <non_scaled_output format="NV12"/>
+                                <bxt_ofa_mp metadata="0,2,0,0"/>
+                            </still_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <still_post_gdc>
+                                <non_scaled_output format="TILE"/>
+                                <bxt_ofa_mp metadata="0,10,0,0"/>
+                            </still_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_0" id="5" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <still_post_gdc>
+                                <scaled_output_0 format="NV12"/>
+                                <bxt_ofa_dp metadata="0,2,0,0"/>
+                            </still_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <still_post_gdc>
+                                <scaled_output_0 format="TILE"/>
+                                <bxt_ofa_dp metadata="0,10,0,0"/>
+                            </still_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <port name="scaled_output_1" id="7" direction="1">
+                <options attribute="format">
+                    <option value="NV12">
+                        <!-- settings applied when switching to NV12!-->
+                        <apply>
+                            <still_post_gdc>
+                                <scaled_output_1 format="NV12"/>
+                                <bxt_ofa_ppp metadata="0,2,0,0"/>
+                            </still_post_gdc>
+                        </apply>
+                    </option>
+                    <option value="TILE">
+                        <apply>
+                            <still_post_gdc>
+                                <scaled_output_1 format="TILE"/>
+                                <bxt_ofa_ppp metadata="0,10,0,0"/>
+                            </still_post_gdc>
+                        </apply>
+                    </option>
+                </options>
+            </port>
+            <!-- ports end -->
+            <!-- kernels -->
+            <!-- Please see video_post-gdc for field descriptions. -->
+            <kernel name="gdc3" pal_uuid="14376" rcb="1" id="0" branch_point="1"/>
+            <kernel name="bxt_ofa_mp" pal_uuid="5232" metadata="0,2,0,0" id="1"/>
+            <kernel name="dma_cropper_mp" pal_uuid="27230" rcb="1" id="2" sink_port="6"/>
+            <kernel name="sc_outputscaler_dp" pal_uuid="5852" rcb="1" restore_point="1" id="3"/>
+            <kernel name="bxt_ofa_dp" pal_uuid="18729" metadata="0,2,0,0" id="4"/>
+            <kernel name="dma_cropper_dp" pal_uuid="47638" rcb="1" id="5" sink_port="5"/>
+            <kernel name="sc_outputscaler_ppp" pal_uuid="60118" rcb="1" restore_point="1" id="6"/>
+            <kernel name="bxt_ofa_ppp" pal_uuid="19509" metadata="0,2,0,0" id="7"/>
+            <kernel name="dma_cropper_ppp" pal_uuid="49162" rcb="1" id="8" sink_port="7"/>
+            <!-- kernels end -->
+        </node>
+        <node name="gfxscaler" type="gfx" pg_id="0">
+            <!-- ports -->
+            <port name="input" id="0" direction="0"/>
+            <port name="output" id="1" direction="1"/>
+            <!-- ports end -->
+        </node>
+
+        <sink name="video0" id="20"/>
+        <sink name="video1" id="21"/>
+        <sink name="video2" id="22"/>
+        <sink name="still0" id="23"/>
+        <sink name="still1" id="24"/>
+        <sink name="still2" id="25"/>
+        <sink name="raw" id="26"/>
+    </nodes>
+
+    <graphs>
+        <graph id="100000" name="Main sensor – preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa:input" />
+            <!-- preview branch -->
+            <connection source="isa:scaled_output" sink="video_pre_gdc:input" />
+            <connection source="video_pre_gdc:ipu_intermediate" sink="video_post_gdc:input" />
+            <connection source="video_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100001" name="Main sensor –vhdr preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="video_hdr_pre_proc:input" />
+            <!-- preview branch -->
+            <connection source="video_hdr_pre_proc:ipu_preproc" sink="video_hq_ns_pre_gdc:input" />
+            <connection source="video_hq_ns_pre_gdc:ipu_intermediate" sink="video_hq_ns_post_gdc:input" />
+            <connection source="video_hq_ns_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hq_ns_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hq_ns_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100002" name="Main sensor –ull preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="video_ull_pre_proc:input" />
+            <!-- preview branch -->
+            <connection source="video_ull_pre_proc:ipu_preproc" sink="video_hq_ns_pre_gdc:input" />
+            <connection source="video_hq_ns_pre_gdc:ipu_intermediate" sink="video_hq_ns_post_gdc:input" />
+            <connection source="video_hq_ns_pre_gdc:noise_output" sink="video_hq_ns_post_gdc:noise_input" />
+            <connection source="video_hq_ns_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hq_ns_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hq_ns_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100003" name="Main sensor –ll preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="video_ll_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_ll_pre_gdc:pre_gdc_output" sink="video0" />
+        </graph>
+
+        <graph id="100004" name="Main sensor – still pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa:input" />
+            <!-- still branch -->
+            <connection source="isa:non_scaled_output" sink="still_pre_gdc:input" />
+            <connection source="still_pre_gdc:ipu_intermediate" sink="still_post_gdc:input" />
+            <connection source="still_post_gdc:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100005" name="Secondary sensor – video">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_isa_preview:input" />
+            <!-- preview branch -->
+            <connection source="video_isa_preview:scaled_output" sink="video_pre_gdc:input" />
+            <connection source="video_pre_gdc:ipu_intermediate" sink="video_post_gdc:input" />
+            <connection source="video_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100006" name="Secondary sensor – SDV">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_isa_preview:input" />
+            <connection source="csi_be_soc:output" sink="video_isa_still:input" />
+            <!-- preview branch -->
+            <connection source="video_isa_preview:scaled_output" sink="video_pre_gdc:input" />
+            <connection source="video_pre_gdc:ipu_intermediate" sink="video_post_gdc:input" />
+            <connection source="video_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc:scaled_output_1" sink="video2" />
+             <!-- still branch -->
+            <connection source="video_isa_still:non_scaled_output" sink="still_pre_gdc:input" />
+            <connection source="still_pre_gdc:ipu_intermediate" sink="still_post_gdc:input" />
+            <connection source="still_post_gdc:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100007" name="Secondary sensor – still">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_isa_still:input" />
+            <!-- still branch -->
+            <connection source="video_isa_still:non_scaled_output" sink="still_pre_gdc:input" />
+            <connection source="still_pre_gdc:ipu_intermediate" sink="still_post_gdc:input" />
+            <connection source="still_post_gdc:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100008" name="Secondary sensor – SDV (single video isa TBDeleted)">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_isa:input" />
+            <!-- preview branch -->
+            <connection source="video_isa:scaled_output" sink="video_pre_gdc:input" />
+            <connection source="video_pre_gdc:ipu_intermediate" sink="video_post_gdc:input" />
+            <connection source="video_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc:scaled_output_1" sink="video2" />
+             <!-- still branch -->
+            <connection source="video_isa:non_scaled_output" sink="still_pre_gdc:input" />
+            <connection source="still_pre_gdc:ipu_intermediate" sink="still_post_gdc:input" />
+            <connection source="still_post_gdc:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100009" name="Main sensor – SDV">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa:input" />
+            <!-- preview branch -->
+            <connection source="isa:scaled_output" sink="video_pre_gdc:input" />
+            <connection source="video_pre_gdc:ipu_intermediate" sink="video_post_gdc:input" />
+            <connection source="video_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc:scaled_output_1" sink="video2" />
+            <!-- still branch -->
+            <connection source="isa:non_scaled_output" sink="still_pre_gdc:input" />
+            <connection source="still_pre_gdc:ipu_intermediate" sink="still_post_gdc:input" />
+            <connection source="still_post_gdc:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100010" name="Main sensor – preview/video high performance pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa:input" />
+            <!-- preview branch -->
+            <connection source="isa:scaled_output" sink="video_pre_gdc:input" />
+            <connection source="video_pre_gdc:ipu_intermediate" sink="video_hp_post_gdc:input" />
+            <connection source="video_hp_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hp_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hp_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100011" name="Main sensor – preview/video HP pregdc postgdc pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_hp_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_hp_pre_gdc:ipu_intermediate" sink="video_hp_post_gdc:input" />
+            <connection source="video_hp_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hp_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hp_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100012" name="Main sensor –ull HQ 4K preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_isa_hq_4k_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_isa_hq_4k_pre_gdc:ipu_intermediate" sink="video_hq_4k_post_gdc:input" />
+            <connection source="video_hq_4k_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hq_4k_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hq_4k_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100013" name="Main sensor –vhdr DRC handled in current frame preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="video_hdr_stats:input" />
+            <!-- preview branch -->
+            <connection source="video_hdr_stats:ipu_preproc" sink="video_drc_pre_gdc:input" />
+            <connection source="video_drc_pre_gdc:ipu_intermediate" sink="video_hq_ns_post_gdc:input" />
+            <connection source="video_hq_ns_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hq_ns_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hq_ns_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100014" name="Main sensor – preview/video HDR2/DOL HP pregdc postgdc pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_hdr_hp_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_hdr_hp_pre_gdc:ipu_intermediate" sink="video_hp_post_gdc:input" />
+            <connection source="video_hp_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hp_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hp_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100015" name="Main sensor –ull HQ 4K preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_isa_hq_4k_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_isa_hq_4k_pre_gdc:ipu_intermediate" sink="video_hq_4k_post_gdc:input" />
+            <connection source="video_hq_4k_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hq_4k_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hq_4k_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100016" name="Main sensor – preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa_cnl:input" />
+            <!-- preview branch -->
+            <connection source="isa_cnl:scaled_output" sink="video_pre_gdc_hq_vcr2:input" />
+            <connection source="video_pre_gdc_hq_vcr2:ipu_intermediate" sink="video_post_gdc_v2_mbr:input" />
+            <connection source="video_post_gdc_v2_mbr:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100017" name="Main sensor – still pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa_cnl:input" />
+            <!-- still branch -->
+            <connection source="isa_cnl:non_scaled_output" sink="still_pre_gdc_xnr4_v3_vcr2:input" />
+            <connection source="still_pre_gdc_xnr4_v3_vcr2:ipu_intermediate" sink="still_post_gdc_v2_mbr:input" />
+            <connection source="still_post_gdc_v2_mbr:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100018" name="Secondary sensor – preview/video pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="psys_isl_cnl:input" />
+            <!-- preview branch -->
+            <connection source="psys_isl_cnl:scaled_output" sink="video_post_gdc_v2_mbr:input" />
+            <connection source="video_post_gdc_v2_mbr:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100019" name="Secondary sensor – preview/video pipe v2">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="psys_isl_cnl:input" />
+            <!-- preview branch -->
+            <connection source="psys_isl_cnl:scaled_output" sink="video_pre_gdc_hq_vcr2:input" />
+            <connection source="video_pre_gdc_hq_vcr2:ipu_intermediate" sink="video_post_gdc_v2_mbr:input" />
+            <connection source="video_post_gdc_v2_mbr:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100020" name="Secondary sensor – still pipe v2">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="psys_isl_cnl:input" />
+            <!-- preview branch -->
+            <connection source="psys_isl_cnl:non_scaled_output" sink="still_pre_gdc_xnr4_v3_vcr2:input" />
+            <connection source="still_pre_gdc_xnr4_v3_vcr2:ipu_intermediate" sink="still_post_gdc_v2_mbr:input" />
+            <connection source="still_post_gdc_v2_mbr:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100030" name="Main sensor – CVF/SDV pipe">
+            <connection source="sensor:port_0" sink="csi_be:input" />
+            <connection source="csi_be:output" sink="isa_cnl:input" />
+            <!-- preview branch -->
+            <connection source="isa_cnl:scaled_output" sink="video_pre_gdc_hq_vcr2:input" />
+            <connection source="video_pre_gdc_hq_vcr2:ipu_intermediate" sink="video_post_gdc_v2_mbr:input" />
+            <connection source="video_post_gdc_v2_mbr:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_1" sink="video2" />
+            <!-- still branch -->
+            <connection source="isa_cnl:non_scaled_output" sink="still_pre_gdc_xnr4_v3_vcr2:input" />
+            <connection source="still_pre_gdc_xnr4_v3_vcr2:ipu_intermediate" sink="still_post_gdc_v2_mbr:input" />
+            <connection source="still_post_gdc_v2_mbr:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100022" name="Secondary sensor – CVF/SDV pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="psys_isl_cnl:input" />
+            <!-- preview branch -->
+            <connection source="psys_isl_cnl:scaled_output" sink="video_pre_gdc_hq_vcr2:input" />
+            <connection source="video_pre_gdc_hq_vcr2:ipu_intermediate" sink="video_post_gdc_v2_mbr:input" />
+            <connection source="video_post_gdc_v2_mbr:non_scaled_output" sink="video0" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_0" sink="video1" />
+            <connection source="video_post_gdc_v2_mbr:scaled_output_1" sink="video2" />
+            <!-- still branch -->
+            <connection source="psys_isl_cnl:non_scaled_output" sink="still_pre_gdc_xnr4_v3_vcr2:input" />
+            <connection source="still_pre_gdc_xnr4_v3_vcr2:ipu_intermediate" sink="still_post_gdc_v2_mbr:input" />
+            <connection source="still_post_gdc_v2_mbr:non_scaled_output" sink="still0" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_0" sink="still1" />
+            <connection source="still_post_gdc_v2_mbr:scaled_output_1" sink="still2" />
+        </graph>
+
+        <graph id="100023" name="Main sensor preview/video HP DRC2 pregdc postgdc pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_hp_drc2_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_hp_drc2_pre_gdc:ipu_intermediate" sink="video_hp_post_gdc:input" />
+            <connection source="video_hp_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hp_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hp_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100024" name="Main sensor – preview/video HDR/DOL HP pregdc postgdc pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="vhdr_pregdc_hp_2fr_v2:input" />
+            <!-- preview branch -->
+            <connection source="vhdr_pregdc_hp_2fr_v2:ipu_intermediate" sink="video_hp_post_gdc:input" />
+            <connection source="video_hp_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hp_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hp_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+        <graph id="100025" name="Main sensor preview/video HP DRC2 V2 pregdc postgdc pipe">
+            <connection source="sensor:port_0" sink="csi_be_soc:input" />
+            <connection source="csi_be_soc:output" sink="video_hp_drc2_v2_pre_gdc:input" />
+            <!-- preview branch -->
+            <connection source="video_hp_drc2_v2_pre_gdc:ipu_intermediate" sink="video_hp_post_gdc:input" />
+            <connection source="video_hp_post_gdc:non_scaled_output" sink="video0" />
+            <connection source="video_hp_post_gdc:scaled_output_0" sink="video1" />
+            <connection source="video_hp_post_gdc:scaled_output_1" sink="video2" />
+        </graph>
+
+    </graphs>
+</graph_descriptor>
+

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2018 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="ox03a10_ficosa" description="ox03a10_ficosa raw sensor">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1280" format="V4L2_PIX_FMT_SGRBG12"> <!-- SRGGB12 BE capture -->
+            <format name="ox03a10_ficosa pixel array a" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ox03a10_ficosa binner a" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ox03a10_ficosa binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1280"/>
+            <format name="ox03a10_ficosa binner a" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="TI960 a" pad="0" stream="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="TI960 a" pad="4" stream="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 0" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 0 meta" pad="0" width="2880" height="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ox03a10_ficosa binner a" srcPad="1" sinkName="TI960 a" sinkPad="0" enable="true"/>
+            <link srcName="TI960 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI960 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="5" sinkName="Intel IPU4 CSI-2 0 meta" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="0" srcPad="5" srcStream="1" flag="1"/>
+            <control name="ox03a10_ficosa pixel array a" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set 1920x1280 DCG mode"/>
+            <control name="TI960 a" ctrlId="V4L2_CID_LINK_FREQ" value="0"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ox03a10_ficosa pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ox03a10_ficosa binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 0 meta" videoNodeType="VIDEO_CSI_META"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1280,0,0,
+                                          V4L2_PIX_FMT_SGRBG12,1920x1280,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="1920x1280"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <statsTrigger value="true"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="dual-exposures-dcg-and-vs"/>
+        <hdrExposureNum value="2"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <hdrGainType value="multi-dg-and-direct-ag"/>
+        <metadataSize value="81920"/>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ox03a10-hdr,
+                                      AUTO,VIDEO-HDR,ox03a10-hdr"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12,V4L2_PIX_FMT_SGRBG12"/>
+        <graphSettingsFile value="graph_settings_ox03a10_ficosa.xml"/>
+    </Sensor>
+
+    <Sensor name="ox03a10_ficosa-2" description="ox03a10_ficosa raw sensor">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1280" format="V4L2_PIX_FMT_SGRBG12"> <!-- SRGGB12 BE capture -->
+            <format name="ox03a10_ficosa pixel array e" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ox03a10_ficosa binner e" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ox03a10_ficosa binner e" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1280"/>
+            <format name="ox03a10_ficosa binner e" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="TI960 b" pad="0" width="1920" height="1280" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="TI960 b" pad="4" width="1920" height="1280" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="1920" height="1280"  format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4 meta" pad="0" width="2880" height="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ox03a10_ficosa binner e" srcPad="1" sinkName="TI960 b" sinkPad="0" enable="true"/>
+            <link srcName="TI960 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI960 b" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="4" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="12" sinkName="Intel IPU4 BE SOC capture 4" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="4" sinkStream="0" srcPad="12" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="5" sinkName="Intel IPU4 CSI-2 4 meta" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="5" srcStream="1" flag="1"/>
+
+            <control name="ox03a10_ficosa pixel array e" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set 1920x1280 DCG mode"/>
+            <control name="TI960 b" ctrlId="V4L2_CID_LINK_FREQ" value="0"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 4" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ox03a10_ficosa pixel array e" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ox03a10_ficosa binner e" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 4 meta" videoNodeType="VIDEO_CSI_META"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1280,0,0,
+                                          V4L2_PIX_FMT_SGRBG12,1920x1280,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="1920x1280"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <statsTrigger value="true"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="dual-exposures-dcg-and-vs"/>
+        <hdrExposureNum value="2"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <hdrGainType value="multi-dg-and-direct-ag"/>
+        <metadataSize value="81920"/>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ox03a10-hdr,
+                                      AUTO,VIDEO-HDR,ox03a10-hdr"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12,V4L2_PIX_FMT_SGRBG12"/>
+        <graphSettingsFile value="graph_settings_ox03a10_ficosa.xml"/>
+    </Sensor>
+
+    <Sensor name="ox03a10_ficosa-3" description="ox03a10_ficosa raw sensor">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1280" format="V4L2_PIX_FMT_SGRBG12"> <!-- SRGGB12 BE capture -->
+            <format name="ox03a10_ficosa pixel array a" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ox03a10_ficosa binner a" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ox03a10_ficosa binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1280"/>
+            <format name="ox03a10_ficosa binner a" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="TI960 a" pad="0" stream="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="TI960 a" pad="4" stream="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 0" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 0 meta" pad="0" width="2880" height="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ox03a10_ficosa binner a" srcPad="1" sinkName="TI960 a" sinkPad="0" enable="true"/>
+            <link srcName="TI960 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI960 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="5" sinkName="Intel IPU4 CSI-2 0 meta" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="0" srcPad="5" srcStream="1" flag="1"/>
+            <control name="ox03a10_ficosa pixel array a" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set 1920x1280 DCG mode"/>
+            <control name="TI960 a" ctrlId="V4L2_CID_LINK_FREQ" value="0"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ox03a10_ficosa pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ox03a10_ficosa binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 0 meta" videoNodeType="VIDEO_CSI_META"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1280,0,0,
+                                          V4L2_PIX_FMT_SGRBG12,1920x1280,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="1920x1280"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <statsTrigger value="true"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="dual-exposures-dcg-and-vs"/>
+        <hdrExposureNum value="2"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <hdrGainType value="multi-dg-and-direct-ag"/>
+        <metadataSize value="81920"/>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ox03a10-hdr2,
+                                      AUTO,VIDEO-HDR,ox03a10-hdr2"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12,V4L2_PIX_FMT_SGRBG12"/>
+        <graphSettingsFile value="graph_settings_ox03a10_ficosa-2.xml"/>
+    </Sensor>
+
+    <Sensor name="ox03a10_ficosa-4" description="ox03a10_ficosa raw sensor">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1280" format="V4L2_PIX_FMT_SGRBG12"> <!-- SRGGB12 BE capture -->
+            <format name="ox03a10_ficosa pixel array e" pad="0" width="1920" height="-1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ox03a10_ficosa binner e" pad="0" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ox03a10_ficosa binner e" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1280"/>
+            <format name="ox03a10_ficosa binner e" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="TI960 b" pad="0" width="1920" height="1280" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="TI960 b" pad="4" width="1920" height="1280" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="1920" height="1280"  format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" width="1920" height="1280" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4 meta" pad="0" width="2880" height="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ox03a10_ficosa binner e" srcPad="1" sinkName="TI960 b" sinkPad="0" enable="true"/>
+            <link srcName="TI960 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI960 b" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="4" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="12" sinkName="Intel IPU4 BE SOC capture 4" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="4" sinkStream="0" srcPad="12" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="5" sinkName="Intel IPU4 CSI-2 4 meta" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="5" srcStream="1" flag="1"/>
+
+            <control name="ox03a10_ficosa pixel array e" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set 1920x1280 DCG mode"/>
+            <control name="TI960 b" ctrlId="V4L2_CID_LINK_FREQ" value="0"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 4" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ox03a10_ficosa pixel array e" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ox03a10_ficosa binner e" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 4 meta" videoNodeType="VIDEO_CSI_META"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1280,0,0,
+                                          V4L2_PIX_FMT_SGRBG12,1920x1280,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="1920x1280"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <statsTrigger value="true"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="dual-exposures-dcg-and-vs"/>
+        <hdrExposureNum value="2"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <hdrGainType value="multi-dg-and-direct-ag"/>
+        <metadataSize value="81920"/>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ox03a10-hdr2,
+                                      AUTO,VIDEO-HDR,ox03a10-hdr2"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12,V4L2_PIX_FMT_SGRBG12"/>
+        <graphSettingsFile value="graph_settings_ox03a10_ficosa-2.xml"/>
+    </Sensor>
+
+</CameraSettings>

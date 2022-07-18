@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2018 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="ar0231" description="ar0231 raw sensor">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_SGRBG12"> <!-- SRGGB12 BE capture -->
+            <format name="ar0231at pixel array a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="ar0231at binner a" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="MAX9286 a" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ar0231at binner a" srcPad="1" sinkName="MAX9286 a" sinkPad="0" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_SGRBG12"> <!-- SRGGB12 BE capture -->
+            <format name="ar0231at pixel array a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="ar0231at binner a" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="MAX9286 a" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ar0231at binner a" srcPad="1" sinkName="MAX9286 a" sinkPad="0" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="1920x1080,1920x1088"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="multi-exposures"/>
+        <hdrExposureNum value="3"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <enableLtmDefog value="false"/>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ar0231-hdr,
+                                      AUTO,VIDEO-HDR,ar0231-hdr"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <graphSettingsFile value="graph_settings_ar0231.xml"/>
+    </Sensor>
+    <Sensor name="ar0231at-vc" description="ar0231at raw 4 virtual channel" virtualChannel="true" vcSeq="1" vcNum="4" vcGroupId="0">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="ar0231at binner a" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner a" srcPad="1" sinkName="MAX9286 a" sinkPad="0" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner a" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="ar0231at binner a" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner a" srcPad="1" sinkName="MAX9286 a" sinkPad="0" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array a" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+        <StaticMetadata>
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+        </StaticMetadata>
+        <supportedISysSizes value="1920x1080,1920x1088"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <enableFrameSyncCheck value="false"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="multi-exposures"/>
+        <hdrExposureNum value="3"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <enableLtmDefog value="false"/>
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ar0231-hdr,
+                                      AUTO,VIDEO-HDR,ar0231-hdr"/>
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <graphSettingsFile value="graph_settings_ar0231.xml"/>
+    </Sensor>
+    <Sensor name="ar0231at-vc-2" description="ar0231at raw 4 virtual channel" virtualChannel="true" vcSeq="2" vcNum="4" vcGroupId="0">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array b" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner b" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="ar0231at binner b" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="1" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="9" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner b" srcPad="1" sinkName="MAX9286 a" sinkPad="1" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="1" sinkStream="0" srcPad="4" srcStream="1" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="2" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="1" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="1" srcPad="2" srcStream="1" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="9" sinkName="Intel IPU4 BE SOC capture 1" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="1" sinkStream="1" srcPad="9" srcStream="1" flag="1"/>
+            <control name="ar0231at pixel array b" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array b" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+            <videonode name="Intel IPU4 BE SOC capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array b" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner b" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array b" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner b" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="ar0231at binner b" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="1" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="9" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner b" srcPad="1" sinkName="MAX9286 a" sinkPad="1" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="1" sinkStream="0" srcPad="4" srcStream="1" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="2" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="1" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="1" srcPad="2" srcStream="1" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="9" sinkName="Intel IPU4 BE SOC capture 1" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="1" sinkStream="1" srcPad="9" srcStream="1" flag="1"/>
+            <control name="ar0231at pixel array b" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array b" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+            <videonode name="Intel IPU4 BE SOC capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array b" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner b" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+        </StaticMetadata>
+        <supportedISysSizes value="1920x1080,1920x1088"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <enableFrameSyncCheck value="false"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="multi-exposures"/>
+        <hdrExposureNum value="3"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <enableLtmDefog value="false"/>
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ar0231-hdr,
+                                      AUTO,VIDEO-HDR,ar0231-hdr"/>
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <graphSettingsFile value="graph_settings_ar0231.xml"/>
+    </Sensor>
+    <Sensor name="ar0231at-vc-3" description="ar0231at raw 4 virtual channel" virtualChannel="true" vcSeq="3" vcNum="4" vcGroupId="0">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array c" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner c" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner c" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="ar0231at binner c" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="2" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="10" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner c" srcPad="1" sinkName="MAX9286 a" sinkPad="2" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="2" sinkStream="0" srcPad="4" srcStream="2" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="3" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="2" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="2" srcPad="3" srcStream="2" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="10" sinkName="Intel IPU4 BE SOC capture 2" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="2" sinkStream="2" srcPad="10" srcStream="2" flag="1"/>
+            <control name="ar0231at pixel array c" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array c" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+            <videonode name="Intel IPU4 BE SOC capture 2" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array c" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner c" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array c" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner c" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner c" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="ar0231at binner c" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="2" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="2" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="10" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner c" srcPad="1" sinkName="MAX9286 a" sinkPad="2" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="2" sinkStream="0" srcPad="4" srcStream="2" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="3" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="2" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="2" srcPad="3" srcStream="2" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="10" sinkName="Intel IPU4 BE SOC capture 2" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="2" sinkStream="2" srcPad="10" srcStream="2" flag="1"/>
+            <control name="ar0231at pixel array c" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array c" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+            <videonode name="Intel IPU4 BE SOC capture 2" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array c" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner c" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+        </StaticMetadata>
+        <supportedISysSizes value="1920x1080,1920x1088"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <enableFrameSyncCheck value="false"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="multi-exposures"/>
+        <hdrExposureNum value="3"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <enableLtmDefog value="false"/>
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ar0231-hdr,
+                                      AUTO,VIDEO-HDR,ar0231-hdr"/>
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <graphSettingsFile value="graph_settings_ar0231.xml"/>
+    </Sensor>
+    <Sensor name="ar0231at-vc-4" description="ar0231at raw 4 virtual channel" virtualChannel="true" vcSeq="4" vcNum="4" vcGroupId="0">
+        <MediaCtlConfig id="0" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array d" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner d" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner d" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="ar0231at binner d" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="3" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="11" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner d" srcPad="1" sinkName="MAX9286 a" sinkPad="3" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="3" sinkStream="0" srcPad="4" srcStream="3" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="4" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="3" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="3" srcPad="4" srcStream="3" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="11" sinkName="Intel IPU4 BE SOC capture 3" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="3" sinkStream="3" srcPad="11" srcStream="3" flag="1"/>
+            <control name="ar0231at pixel array d" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array d" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+            <videonode name="Intel IPU4 BE SOC capture 3" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array d" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner d" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="HDR,AUTO" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_SGRBG12"> <!-- SGRBG12 BE capture -->
+            <format name="ar0231at pixel array d" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="ar0231at binner d" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="ar0231at binner d" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="ar0231at binner d" pad="1" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="3" stream="0" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="MAX9286 a" pad="4" stream="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI-2 4" pad="4" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="3" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="11" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <link srcName="ar0231at binner d" srcPad="1" sinkName="MAX9286 a" sinkPad="3" enable="true"/>
+            <link srcName="MAX9286 a" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="MAX9286 a" sinkPad="3" sinkStream="0" srcPad="4" srcStream="3" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="4" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="3" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="3" srcPad="4" srcStream="3" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="11" sinkName="Intel IPU4 BE SOC capture 3" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="3" sinkStream="3" srcPad="11" srcStream="3" flag="1"/>
+            <control name="ar0231at pixel array d" ctrlId="CRL_CID_EXPOSURE_MODE" value="2" ctrlName="set ar0231 hdr mode"/>
+            <control name="ar0231at pixel array d" ctrlId="CRL_CID_EXPOSURE_HDR_RATIO" value="32768" ctrlName="set ar0231 hdr ratio"/>
+            <videonode name="Intel IPU4 BE SOC capture 3" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="ar0231at pixel array d" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ar0231at binner d" videoNodeType="VIDEO_PIXEL_BINNER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1088,0,0"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                      MANUAL_WHITE_BALANCE,
+                                      IMAGE_ENHANCEMENT,
+                                      NOISE_REDUCTION,
+                                      SCENE_MODE,
+                                      WEIGHT_GRID_MODE,
+                                      ISP_CONTROL"/>
+            <supportedIspControls value="wb_gains,color_correction_matrix,advanced_color_correction_matrix,bxt_csc,bxt_demosaic,sc_iefd,see,bnlm,tnr5_21,xnr_dss,gamma_tone_map"/>
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+        </StaticMetadata>
+        <supportedISysSizes value="1920x1080,1920x1088"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG12"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <enableAIQ value="true"/>
+        <enableFrameSyncCheck value="false"/>
+        <useSensorDigitalGain value="true"/>
+        <exposureLag value="2"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <gainLag value="2"/>
+        <ltmGainLag value="1"/>
+        <hdrExposureType value="multi-exposures"/>
+        <hdrExposureNum value="3"/>
+        <hdrStatsInputBitDepth value="15"/>
+        <hdrStatsOutputBitDepth value="15"/>
+        <useFixedHdrExposureInfo value="false"/>
+        <enableLtmDefog value="false"/>
+        <supportedTuningConfig value="HDR,VIDEO-HDR,ar0231-hdr,
+                                      AUTO,VIDEO-HDR,ar0231-hdr"/>
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <graphSettingsFile value="graph_settings_ar0231.xml"/>
+    </Sensor>
+</CameraSettings>
