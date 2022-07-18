@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017 Intel Corporation.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<FileSource>
+    <!-- Provide common config for all sensors and they can be overridden by a specific sensor. -->
+    <Common>
+        <fps value="30"/>      <!-- Indicates how many frames need to be produced per second. -->
+        <frameDir value="."/>  <!-- Indicates where to find the frame file. -->
+    </Common>
+
+	<!-- The sensor name MUST match with the one in libcamhal_profile.xml. -->
+    <Sensor name="tpg">
+        <!-- frameFile is used to specify which frame file is use for frame{sequence}.
+             The sequence doesn't have to be consecutive. If HAL cannot find a proper sequence,
+             it will use the one smaller than that sequence.
+             So the frame file for sequence 0 MUST be provided.
+        -->
+        <frameFile sequence="0"  file="frame_0"/>
+        <frameFile sequence="1"  file="frame_1"/>
+        <frameFile sequence="5"  file="frame_5"/>
+        <frameFile sequence="10" file="frame_10"/>
+        <frameFile sequence="20" file="frame_20"/>
+        <frameFile sequence="50" file="frame_50"/>
+        <frameFile sequence="100" file="frame_100"/>
+    </Sensor>
+
+    <Sensor name="imx185">
+        <frameDir value="imx185"/>
+        <fps value="60"/>
+        <frameFile sequence="0" file="frame_0"/>
+    </Sensor>
+</FileSource>
+

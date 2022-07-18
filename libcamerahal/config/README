@@ -1,0 +1,150 @@
+/*
+ * Copyright (C) 2014-2018 Intel Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+This folder contains the XML files to configure the Camera HAL based on sensor
+types and platforms.
+
+Brief Introduction
+=============
+
+libcamhal_profile.xml:
+    The entry XML file for all sensors. It contains platform information and available sensors.
+    This is the must to have file to make camea HAL run.
+    <version value="1.0"/>
+    <platform value="ipu4"/>
+    <availableSensors value="tpg,mondello,imx185,aggregator,ov10635,ov10640,imx274,imx290,imx477,magna"/>
+
+    Note: The available sensors indicates XML file name for this sensor(eg:
+    imx185.xml). Add the sensor name in availableSensors if you want to enable
+    a new sensor.
+
+sensors/
+This folder is for sensor settings
+
+$SESNOR_NAME.xml
+  The file is the specific settings for a sensor.
+There is a more detailed introduction in template_raw.xml and template_soc.xml
+You can refer it to add the static metedata, sensor setting, and isys pipeline for new sensor.
+
+gcss/
+This folder is for graph setting(Program Group Kernel):
+
+ 1. Hal uses the stream config info to select graph config: in graph_settings.xml
+         active output(request stream number),
+         width/height/format for each stream,
+         operation mode: op_mode
+    Then one graph is selected. According to the "id" in settings you can view
+    the psys pipe connection(which pg is used, how to link all the pgs...).
+    And you can check the kernels used in each pg.
+ 2. You can set all the settings for each kernel and pg:
+   kernels:
+       typedef struct {   
+          uint32_t stream_id;                               // stream_id field in pg
+          uint32_t kernel_uuid;                             // Kernel pal_uuid
+          int32_t enable;                                   // Enable/disable, you can set it in graph_descriptor and graph_settings. (the graph_settings is hight priority)
+          ia_isp_bxt_resolution_info_t *resolution_info;    // The resoltion info in graph_settings
+          ia_isp_bxt_resolution_info_t *resolution_history; // The resolution_info inherited from last kernel if don't set this kernel
+          uint32_t metadata[4];                             // The metedata, you can set in graph_descriptor and graph_settings. (the graph_settings is hight priority)
+       } ia_isp_bxt_run_kernels_t;
+ 3. you need to set all the input/output port. Must to set disable if you don't use the port id.
+
+The template grap_settings.xml:
+ <settings key="8000" id="100000" op_mode="NORMAL" active_outputs="1">
+ <!-- key: the graph indications, id: the graph id(pg connection) in graph_descriptor. op_mode: operation_mode. active_output: the output stream number -->
+
+     <sensor mode_id="1952x1096_f" analogue_gain="100" exposure="500">
+         <port_0 width="1952" height="1096" format="RG10"/>
+     </sensor>
+     <video0 width="1920" height="1080" stream_id="60000"/>
+     <!-- the information for each output stream -->
+
+     <csi_be>
+         <output width="1920" height="1080" format="BA10"/>
+         <bxt_pixelformatter>
+             <input width="1952" height="1096" left="16" top="8" right="16" bottom="8" />
+             <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+         </bxt_pixelformatter>
+     </csi_be>
+     <isa>
+         <non_scaled_output width="1920" height="1080" format="bV0K" enabled="0"/>
+         <scaled_output width="1920" height="1080" format="y032"/>
+         <bxt_inputscaler>
+             <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+             <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+         </bxt_inputscaler>
+
+         <bxt_cropvideo enabled="0"/>
+         <bxt_cropstills enabled="0"/>
+         <!-- the disabled kernel list -->
+
+         <!-- add metadata value for the kernels -->
+     </isa>
+     <!-- unused, the settings for isys is in SENSOR_NAME.xml -->
+
+     <video_pre_gdc stream_id="60000">
+         <input width="1920" height="1088" format="y032"/>
+         <ipu_intermediate width="1920" height="1088" format="V420"/>
+         <!-- the input/output port for this pg, the port name and id are defined in graph_descriptor.xml -->
+
+         <bxt_xnr4_m>
+             <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+             <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+         </bxt_xnr4_m>
+         <!-- the kernel resolution info, and inherit it to next kernel's resolution history if don't set the kernel info-->
+
+     </video_pre_gdc>
+     <video_post_gdc stream_id="60000">
+         <input width="1920" height="1088" format="V420"/>
+         <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+         <scaled_output_0 enabled="0" />
+         <scaled_output_1 enabled="0"/>
+         <!-- for the last pg, need to set the peer(video/still) for each enabled output port. And disabled the unused ports -->
+
+         <gdc3>
+             <input width="1920" height="1088" left="0" top="4" right="0" bottom="4"/>
+             <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+         </gdc3>
+         <!-- ...... -->
+
+         <bxt_ofa_dp enabled="0"/>
+         <dma_cropper_dp enabled="0"/>
+         <sc_outputscaler_ppp enabled="0"/>
+         <bxt_ofa_ppp enabled="0"/>
+         <dma_cropper_ppp enabled="0"/>
+         <!-- the disabled kernel list -->
+
+         <!-- add metadata for kernels -->
+     </video_post_gdc>
+ </settings>
+
+psys_policy_profiles.xml:
+This profile file is for the relationship between each pg used in the psys pipeline.
+
+ <graph id="100012"> <!-- the graph id must be equal to it in graph_descriptor, since they need to use same pg name and connection -->
+    <!-- op_modes: 0-disabled, 2-coupled. see ia_cipf_css.h in libiacss -->
+    <pipe_executor name="video_hq_4k_ull"  pgs="video_isa_hq_4k_pre_gdc,video_hq_4k_post_gdc" op_modes="0,0" cyclic_feedback_routine="0,0" cyclic_feedback_delay="1,1"/>
+    <!-- name: the pipe executor name,  pgs: the pg list in this pipe executor, op_modes: the op mode for each pg in this pipe executor, cyclic_feedback_routine: cyclic feedback routine, cyclic_feedback_delay: cyclic feedback delay -->
+
+    <exclusive pgs="video_isa_hq_4k_pre_gdc"/>
+    <!-- exclusive pg list: couldn't be parallel with other pgs if there is this pg in the pipe executor -->
+
+    <bundle executors="ull_proc:0,ull_post:1"/>
+    <!-- the pg ull_post must be parallel with ull proc, hal uses this to implemet the parallel logic -->
+ </graph>
+
+
+ The above information is used for adding one new sensor. And please refer
+ to the "Linux Camera HAL High Level Design" document if you have any question when you enable new sensor.

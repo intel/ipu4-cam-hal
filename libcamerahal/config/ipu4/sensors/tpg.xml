@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="tpg" description="Not a real sensor, only generate test pattern for debug purpose.">
+        <MediaCtlConfig id="0"> <!-- VEC_RAW8 BE capture -->
+            <format name="Intel IPU4 CSI2 BE" pad="0"/>
+            <format name="Intel IPU4 TPG 0" pad="0"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1"/>
+            <link srcName="Intel IPU4 TPG 0" srcPad="0" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 CSI2 BE capture" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 CSI2 BE capture" videoNodeType="VIDEO_GENERIC"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_SGRBG8V32,320x240,0,0,
+                                          V4L2_PIX_FMT_SGRBG8V32,640x480,0,0,
+                                          V4L2_PIX_FMT_SGRBG8V32,1280x720,0,0,
+                                          V4L2_PIX_FMT_SGRBG8V32,1280x800,0,0,
+                                          V4L2_PIX_FMT_SGRBG8V32,1920x1080,0,0,
+                                          V4L2_PIX_FMT_NV12,320x240,0,0,
+                                          V4L2_PIX_FMT_NV12,640x480,0,0,
+                                          V4L2_PIX_FMT_NV12,1280x720,0,0,
+                                          V4L2_PIX_FMT_NV12,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                          V4L2_PIX_FMT_YUV420,1920x1080,0,0,
+                                          V4L2_PIX_FMT_YUYV,320x240,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x720,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,0,0,
+                                          V4L2_PIX_FMT_RGB24,1920x1080,0,0"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="320x240,640x480,1280x720,1280x800,1920x1080"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_SGRBG8V32"/>
+        <enableAIQ value="false"/>
+    </Sensor>
+</CameraSettings>

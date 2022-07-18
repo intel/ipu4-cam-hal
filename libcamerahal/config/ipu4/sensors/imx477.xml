@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="imx477-1" description="imx477 raw master">
+        <MediaCtlConfig id="0" ConfigMode="NORMAL" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_YUYV420_V32"> <!-- VEC_YUV BE capture -->
+            <link srcName="imx477 pixel array a" srcPad="0" sinkName="imx477 binner a" sinkPad="0" enable="true"/>
+            <link srcName="imx477 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="4" sinkName="Intel IPU4 ISA scaled capture" sinkPad="0" enable="true"/>
+
+            <format name="imx477 pixel array a" pad="0" type="RESOLUTION_MAX" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="imx477 binner a" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="imx477 binner a" pad="1" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <selection name="imx477 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="4056" height="3040"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="1920" height="1080" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="3" top="4" width="1920" height="1080"/>
+
+            <format name="Intel IPU4 ISA" pad="0" width="1920" height="1080" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="1920" height="1080" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="Intel IPU4 ISA" pad="4" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="Intel IPU4 ISA" pad="4" width="1920" height="1080" format="MEDIA_BUS_FMT_YUYV12_1X24"/>
+
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA scaled capture" videoNodeType="VIDEO_ISA_SCALE"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="imx477 pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="imx477 binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="STILL_CAPTURE" outputWidth="4096" outputHeight="3040" format="V4L2_PIX_FMT_SGRBG10"> <!-- RAW10 BE-SOC capture -->
+            <link srcName="imx477 pixel array a" srcPad="0" sinkName="imx477 binner a" sinkPad="0" enable="true"/>
+            <link srcName="imx477 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="5"/>
+
+            <!-- PSYS ISA only supports SGRBG format. Doing HFLIP for getting SGRBG format  -->
+            <control name="imx477 pixel array a" ctrlId="V4L2_CID_HFLIP" value="1" ctrlName="set HFLIP"/>
+            <format name="imx477 pixel array a" pad="0" type="RESOLUTION_MAX" width="4056" height="3040" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="imx477 binner a" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="imx477 binner a" pad="1" width="4056" height="3040" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="imx477 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="4056" height="3040"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8" width="4096" height="3040" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE SOC" pad="8" target="V4L2_SEL_TGT_CROP" left="0" top="0" width="4096" height="3040"/>
+
+            <videonode name="imx477 pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="imx477 binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                      V4L2_PIX_FMT_NV12,4032x3008,0,1"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                  MANUAL_WHITE_BALANCE,
+                                  IMAGE_ENHANCEMENT,
+                                  NOISE_REDUCTION,
+                                  SCENE_MODE,
+                                  WEIGHT_GRID_MODE"/>
+            <supportedAeExposureTimeRange value="AUTO,0,1000000,
+                                  HDR,150,2100,
+                                  ULL,0,1000000"/> <!--scene_mode,min_exposure_time,max_exposure_time -->
+            <supportedAeGainRange value="AUTO,0,60,
+                                  HDR,0,12,
+                                  ULL,0,60"/> <!--scene_mode,min_gain,max_gain -->
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAeMode value="AUTO,MANUAL"/>
+            <supportedVideoStabilizationModes value="ON,OFF"/>
+            <supportedSceneMode value="AUTO,NORMAL"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+            <supportedAwbMode value="AUTO,INCANDESCENT,FLUORESCENT,DAYLIGHT,FULL_OVERCAST,PARTLY_OVERCAST,SUNSET,VIDEO_CONFERENCE,MANUAL_CCT_RANGE,MANUAL_WHITE_POINT,MANUAL_GAIN,MANUAL_COLOR_TRANSFORM"/>
+        </StaticMetadata>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,CameraMode,aiqb name" -->
+        <supportedTuningConfig value="NORMAL,VIDEO,imx185-ull,
+                                      STILL_CAPTURE,STILL_CAPTURE,imx185-ull"/>
+
+        <supportedISysSizes value="1920x1080,4096x3040"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_YUYV420_V32,V4L2_PIX_FMT_SGRBG10"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <enableAIQ value="true"/>
+        <lensName value="camera-pwm"/>
+        <lensHwType value="LENS_PWM_HW"/>
+        <lensCloseCode value="200"/>
+        <cITMaxMargin value="4"/> <!-- coarse integration time max margin -->
+        <initialSkipFrame value="1"/>
+        <exposureLag value="2"/>
+        <gainLag value="1"/>
+        <pipeSwitchDelayFrame value="60"/>
+        <graphSettingsFile value="graph_settings_imx477.xml"/>
+    </Sensor>
+
+    <Sensor name="imx477-2" description="imx477 raw slave">
+        <MediaCtlConfig id="0" ConfigMode="NORMAL" outputWidth="1920" outputHeight="1080" format="V4L2_PIX_FMT_YUYV420_V32"> <!-- VEC_YUV BE capture -->
+            <link srcName="imx477 pixel array b" srcPad="0" sinkName="imx477 binner b" sinkPad="0" enable="true"/>
+            <link srcName="imx477 binner b" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="4" sinkName="Intel IPU4 ISA scaled capture" sinkPad="0" enable="true"/>
+
+            <format name="imx477 pixel array b" pad="0" type="RESOLUTION_MAX" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="imx477 binner b" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="imx477 binner b" pad="1" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <selection name="imx477 binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="4056" height="3040"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SRGGB10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="1920" height="1080" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="3" top="4" width="1920" height="1080"/>
+
+            <format name="Intel IPU4 ISA" pad="0" width="1920" height="1080" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="1920" height="1080" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="Intel IPU4 ISA" pad="4" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1080"/>
+            <format name="Intel IPU4 ISA" pad="4" width="1920" height="1080" format="MEDIA_BUS_FMT_YUYV12_1X24"/>
+
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA scaled capture" videoNodeType="VIDEO_ISA_SCALE"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="imx477 pixel array b" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="imx477 binner b" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1" ConfigMode="STILL_CAPTURE" outputWidth="4096" outputHeight="3008" format="V4L2_PIX_FMT_SGRBG12V32"> <!-- VEC_RAW12 BE capture -->
+            <link srcName="imx477 pixel array b" srcPad="0" sinkName="imx477 binner b" sinkPad="0" enable="true"/>
+            <link srcName="imx477 binner b" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+
+            <control name="imx477 pixel array b" ctrlId="V4L2_CID_HFLIP" value="1" ctrlName="set HFLIP"/>
+            <control name="imx477 pixel array b" ctrlId="V4L2_CID_VFLIP" value="1" ctrlName="set VFLIP"/>
+            <format name="imx477 pixel array b" pad="0" type="RESOLUTION_MAX" width="4056" height="3040" format="V4L2_MBUS_FMT_SBGGR10_1X10"/>
+            <format name="imx477 binner b" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SBGGR10_1X10"/>
+            <format name="imx477 binner b" pad="1" width="4056" height="3040" format="V4L2_MBUS_FMT_SBGGR10_1X10"/>
+            <selection name="imx477 binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="4056" height="3040"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SBGGR10_1X10"/>
+
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="4056" height="3040" format="V4L2_MBUS_FMT_SBGGR10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="4096" height="3008" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="0" top="1" width="4096" height="3008"/>
+
+            <format name="Intel IPU4 ISA" pad="0" width="4096" height="3008" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="4096" height="3008" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="imx477 pixel array b" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="imx477 binner b" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0,
+                                      V4L2_PIX_FMT_NV12,4032x3008,0,1"/>
+            <supportedFeatures value="MANUAL_EXPOSURE,
+                                  MANUAL_WHITE_BALANCE,
+                                  IMAGE_ENHANCEMENT,
+                                  NOISE_REDUCTION,
+                                  SCENE_MODE,
+                                  WEIGHT_GRID_MODE"/>
+            <supportedAeExposureTimeRange value="AUTO,0,1000000,
+                                             HDR,150,2100,
+                                             ULL,0,1000000"/> <!--scene_mode,min_exposure_time,max_exposure_time -->
+            <supportedAeGainRange value="AUTO,0,60,
+                                     HDR,0,12,
+                                     ULL,0,60"/> <!--scene_mode,min_gain,max_gain -->
+            <fpsRange value="10,30,10,60"/>
+            <evRange value="-4,4"/>
+            <evStep value="1,1"/>
+            <supportedAeMode value="AUTO,MANUAL"/>
+            <supportedVideoStabilizationModes value="ON,OFF"/>
+            <supportedSceneMode value="AUTO,NORMAL"/>
+            <supportedAntibandingMode value="AUTO,50Hz,60Hz,OFF"/>
+            <supportedAwbMode value="AUTO,INCANDESCENT,FLUORESCENT,DAYLIGHT,FULL_OVERCAST,PARTLY_OVERCAST,SUNSET,VIDEO_CONFERENCE,MANUAL_CCT_RANGE,MANUAL_WHITE_POINT,MANUAL_GAIN,MANUAL_COLOR_TRANSFORM"/>
+        </StaticMetadata>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,CameraMode,aiqb name" -->
+        <supportedTuningConfig value="NORMAL,VIDEO,imx185-ull,
+                                      STILL_CAPTURE,STILL_CAPTURE,imx185-ull"/>
+
+        <supportedISysSizes value="1920x1080,4096x3008"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_YUYV420_V32,V4L2_PIX_FMT_SGRBG12V32"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <enableAIQ value="true"/>
+        <lensName value="camera-pwm"/>
+        <lensHwType value="LENS_PWM_HW"/>
+        <lensCloseCode value="200"/>
+        <cITMaxMargin value="4"/> <!-- coarse integration time max margin -->
+        <initialSkipFrame value="1"/>
+        <exposureLag value="2"/>
+        <gainLag value="1"/>
+        <pipeSwitchDelayFrame value="60"/>
+        <graphSettingsFile value="graph_settings_imx477-2.xml"/>
+    </Sensor>
+</CameraSettings>
