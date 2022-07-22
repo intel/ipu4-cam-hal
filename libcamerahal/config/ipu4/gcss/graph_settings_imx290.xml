@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2015-2018 Intel Corporation
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<graph_settings>
+    <sensor_modes sensor_name="imx290" csi_port="0" metadata="0" interlaced="0" bayer_order="RGGB">
+        <available_bit_per_pixel>
+            <bpp value="10"/>
+            <bpp value="8"/>
+        </available_bit_per_pixel>
+        <pll_configs>
+            <pll_config id="0" pixel_rate="600000000" pixel_rate_csi="599680000" bpp="10"/>
+            <pll_config id="1" pixel_rate="600000000" pixel_rate_csi="374800000" bpp="8"/>
+            <pll_config id="2" pixel_rate="600000000" pixel_rate_csi="299840000" bpp="10"/>
+        </pll_configs>
+        <sensor_mode name="1948x1096_r" id="0" width="1932" height="1094" min_fll="1660" min_llp="6024" fps="30.0">
+            <pixel_array>
+                <input width="1952" height="3435" left="0" top="0"/>
+                <output width="1952" height="3435" left="0" top="0"/>
+            </pixel_array>
+            <binner h_factor="1" v_factor="1">
+                <input width="1952" height="3435" left="0" top="0"/>
+                <output width="1948" height="1096" left="0" top="0"/>
+            </binner>
+        </sensor_mode>
+    </sensor_modes>
+
+    <!-- preview 1080p -->
+    <settings key="9001" id="100000" op_mode="NORMAL" active_outputs="1">
+        <sensor mode_id="1948x1096_r" analogue_gain="100" exposure="500">
+            <port_0 width="1948" height="1096" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1080" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1948" height="1096" left="5" top="4" right="21" bottom="12" />
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <isa>
+            <scaled_output width="1920" height="1080" format="y032"/>
+            <non_scaled_output width="1920" height="1080" format="bV0K" enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <bxt_inputscaler>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </bxt_inputscaler>
+            <!-- END KERNEL SETTINGS -->
+            <!-- disabled kernels-->
+            <bxt_cropvideo enabled="0"/>
+            <bxt_cropstills enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </isa>
+        <video_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="y032"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <bxt_xnr4_m>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_xnr4_m>
+        </video_pre_gdc>
+        <video_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 enabled="0" />
+            <scaled_output_1 enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <dma_cropper_mp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_mp>
+            <bxt_ofa_dp>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_dp>
+            <dma_cropper_dp>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_dp>
+
+            <!-- disabled kernels-->
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <sc_outputscaler_dp enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </video_post_gdc>
+    </settings>
+
+    <!-- preview 1080p, video 1080P -->
+    <settings key="9005" id="100000" op_mode="NORMAL" active_outputs="2">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <video1 width="1920" height="1080" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1080" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="7" right="6" bottom="7" />
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <isa>
+            <scaled_output width="1920" height="1080" format="y032"/>
+            <non_scaled_output width="1920" height="1080" format="bV0K" enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <bxt_inputscaler>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </bxt_inputscaler>
+            <!-- END KERNEL SETTINGS -->
+            <!-- disabled kernels-->
+            <bxt_cropvideo enabled="0"/>
+            <bxt_cropstills enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </isa>
+        <video_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="y032"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <bxt_xnr4_m>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_xnr4_m>
+        </video_pre_gdc>
+        <video_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 width="1920" height="1080" format="NV12" peer="video1"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <bxt_ofa_mp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1088" height="1920" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_mp>
+            <dma_cropper_mp>
+                <input width="1920" height="1088" left="0" top="4" right="0" bottom="4"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_mp>
+            <bxt_ofa_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_dp>
+            <sc_outputscaler_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_dp>
+            <dma_cropper_dp>
+                <input width="1920" height="1088" left="0" top="4" right="0" bottom="4"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_dp>
+            <!-- disabled kernels-->
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </video_post_gdc>
+    </settings>
+
+    <!-- preview 720p, video 1080P -->
+    <settings key="9006" id="100000" op_mode="NORMAL" active_outputs="2">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <video1 width="1280" height="720" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1080" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="7" right="6" bottom="7" />
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <isa>
+            <scaled_output width="1920" height="1080" format="y032"/>
+            <non_scaled_output width="1920" height="1080" format="bV0K" enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <bxt_inputscaler>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </bxt_inputscaler>
+            <!-- END KERNEL SETTINGS -->
+            <!-- disabled kernels-->
+            <bxt_cropvideo enabled="0"/>
+            <bxt_cropstills enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </isa>
+        <video_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="y032"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <bxt_xnr4_m>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_xnr4_m>
+        </video_pre_gdc>
+        <video_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 width="1280" height="720" format="NV12" peer="video1"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- KERNEL SETTINGS -->
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <bxt_ofa_mp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1088" height="1920" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_mp>
+            <dma_cropper_mp>
+                <input width="1920" height="1088" left="0" top="4" right="0" bottom="4"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_mp>
+            <bxt_ofa_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_dp>
+            <sc_outputscaler_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_dp>
+            <dma_cropper_dp>
+                <input width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </dma_cropper_dp>
+            <!-- disabled kernels-->
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- END KERNEL SETTINGS -->
+        </video_post_gdc>
+    </settings>
+
+    <!-- preview 1080p hdr pipe-->
+    <settings key="9100" id="100001" op_mode="HDR" active_outputs="1">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1088" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="3" right="6" bottom="3" />
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <video_hdr_pre_proc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_preproc width="1920" height="1088" format="bV0K"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <!-- disabled kernels -->
+            <bxt_wb enabled="0"/>
+            <see enabled="0"/>
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_3a_ccm enabled="0"/>
+            <!-- metadata -->
+        </video_hdr_pre_proc>
+        <video_hq_ns_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <noise_output width="1920" height="1088" enabled="0"/>
+            <!-- resolution info -->
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_vcud enabled="0"/>
+            <bxt_vcr enabled="0"/>
+            <bxt_pixprecadapter_postvcr enabled="0"/>
+            <bxt_pixprecadapter_precsc2 enabled="0"/>
+            <bxt_pixprecadapter_pregdc enabled="0"/>
+            <!-- metadata -->
+        </video_hq_ns_pre_gdc>
+        <video_hq_ns_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 enabled="0" />
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <tnr5_21>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_21>
+            <sc_outputscaler_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_dp>
+            <sc_outputscaler_ppp>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_ppp>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- metadata -->
+        </video_hq_ns_post_gdc>
+    </settings>
+
+    <!-- preview 1080p, video 1080p hdr pipe-->
+    <settings key="9101" id="100001" op_mode="HDR" active_outputs="2">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <video1 width="1920" height="1080" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1088" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="3" right="6" bottom="3" />
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <video_hdr_pre_proc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_preproc width="1920" height="1088" format="bV0K"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <!-- disabled kernels -->
+            <bxt_wb enabled="0"/>
+            <see enabled="0"/>
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_3a_ccm enabled="0"/>
+            <!-- metadata -->
+        </video_hdr_pre_proc>
+        <video_hq_ns_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <noise_output width="1920" height="1088" enabled="0"/>
+            <!-- resolution info -->
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_vcud enabled="0"/>
+            <bxt_vcr enabled="0"/>
+            <bxt_pixprecadapter_postvcr enabled="0"/>
+            <bxt_pixprecadapter_precsc2 enabled="0"/>
+            <bxt_pixprecadapter_pregdc enabled="0"/>
+            <!-- metadata -->
+        </video_hq_ns_pre_gdc>
+        <video_hq_ns_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 width="1920" height="1080" format="NV12" peer="video1"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <tnr5_21>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_21>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- metadata -->
+        </video_hq_ns_post_gdc>
+    </settings>
+
+    <!-- preview 720p, video 1080p hdr pipe-->
+    <settings key="9102" id="100001" op_mode="HDR" active_outputs="2">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <video1 width="1280" height="720" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1088" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="3" right="6" bottom="3" />
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <video_hdr_pre_proc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_preproc width="1920" height="1088" format="bV0K"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <!-- disabled kernels -->
+            <bxt_wb enabled="0"/>
+            <see enabled="0"/>
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_3a_ccm enabled="0"/>
+            <!-- metadata -->
+        </video_hdr_pre_proc>
+        <video_hq_ns_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <noise_output width="1920" height="1088" enabled="0"/>
+            <!-- resolution info -->
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_vcud enabled="0"/>
+            <bxt_vcr enabled="0"/>
+            <bxt_pixprecadapter_postvcr enabled="0"/>
+            <bxt_pixprecadapter_precsc2 enabled="0"/>
+            <bxt_pixprecadapter_pregdc enabled="0"/>
+            <!-- metadata -->
+        </video_hq_ns_pre_gdc>
+        <video_hq_ns_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 width="1280" height="720" format="NV12" peer="video1"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <tnr5_21>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_21>
+            <bxt_ofa_mp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_mp>
+            <sc_outputscaler_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_dp>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- metadata -->
+        </video_hq_ns_post_gdc>
+    </settings>
+
+    <!-- preview 1080p ull/hlc pipe-->
+    <settings key="9200" id="100002" op_mode="ULL,HLC,CUSTOM_AIC" active_outputs="1">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1088" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="3" right="6" bottom="3" />
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <video_ull_pre_proc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_preproc width="1920" height="1088" format="bV0K"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <!-- disabled kernels -->
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_inputscaler enabled="0"/>
+            <drc_1 enabled="0"/>
+            <hdrstats_1 enabled="0"/>
+        </video_ull_pre_proc>
+        <video_hq_ns_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <noise_output width="1920" height="1088" enabled="0"/>
+            <!-- resolution info -->
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_vcud enabled="0"/>
+            <!-- metadata -->
+            <bxt_bnlm metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+        </video_hq_ns_pre_gdc>
+        <video_hq_ns_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <noise_input width="1920" height="1088" enabled="0"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 enabled="0" />
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <tnr5_21>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_21>
+            <sc_outputscaler_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_dp>
+            <sc_outputscaler_ppp>
+                <input width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_ppp>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+        </video_hq_ns_post_gdc>
+    </settings>
+
+    <!-- preview 1080p ull/hlc pipe-->
+    <settings key="9201" id="100002" op_mode="ULL,HLC,CUSTOM_AIC" active_outputs="2">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1088" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="3" right="6" bottom="3" />
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <video_ull_pre_proc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_preproc width="1920" height="1088" format="bV0K"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <!-- disabled kernels -->
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_inputscaler enabled="0"/>
+            <drc_1 enabled="0"/>
+            <hdrstats_1 enabled="0"/>
+        </video_ull_pre_proc>
+        <video_hq_ns_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <noise_output width="1920" height="1088" enabled="0"/>
+            <!-- resolution info -->
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_vcud enabled="0"/>
+            <!-- metadata -->
+            <bxt_bnlm metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+        </video_hq_ns_pre_gdc>
+        <video_hq_ns_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <noise_input width="1920" height="1088" enabled="0"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 width="1920" height="1080" format="NV12" peer="video1"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <tnr5_21>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_21>
+            <bxt_ofa_mp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_mp>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+        </video_hq_ns_post_gdc>
+    </settings>
+
+    <!-- preview 1080p ull/hlc pipe-->
+    <settings key="9201" id="100002" op_mode="ULL,HLC,CUSTOM_AIC" active_outputs="2">
+        <sensor mode_id="1932x1094_r" analogue_gain="100" exposure="500">
+            <port_0 width="1932" height="1094" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <video0 width="1280" height="720" stream_id="60001"/>
+        <csi_be>
+            <output width="1920" height="1088" format="BA10"/>
+            <bxt_pixelformatter>
+                <input width="1932" height="1094" left="6" top="3" right="6" bottom="3" />
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_pixelformatter>
+        </csi_be>
+        <video_ull_pre_proc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_preproc width="1920" height="1088" format="bV0K"/>
+            <!-- resolution info -->
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <!-- disabled kernels -->
+            <bxt_gridbaseob enabled="0"/>
+            <bxt_inputscaler enabled="0"/>
+            <drc_1 enabled="0"/>
+            <hdrstats_1 enabled="0"/>
+        </video_ull_pre_proc>
+        <video_hq_ns_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="bV0K"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <noise_output width="1920" height="1088" enabled="0"/>
+            <!-- resolution info -->
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_vcud enabled="0"/>
+            <!-- metadata -->
+            <bxt_bnlm metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+        </video_hq_ns_pre_gdc>
+        <video_hq_ns_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <noise_input width="1920" height="1088" enabled="0"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 width="1280" height="720" format="NV12" peer="video1"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <tnr5_21>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </tnr5_21>
+            <bxt_ofa_mp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_ofa_mp>
+            <sc_outputscaler_dp>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1280" height="720" left="0" top="0" right="0" bottom="0"/>
+            </sc_outputscaler_dp>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+        </video_hq_ns_post_gdc>
+    </settings>
+</graph_settings>

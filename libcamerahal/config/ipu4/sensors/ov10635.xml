@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="ov10635-vc" description="ov10635 virtual channel" virtualChannel="true" vcSeq="1" vcNum="4" vcGroupId="0">
+
+        <MediaCtlConfig id="0"> <!-- FE capture -->
+            <format name="TI964 a" pad="0" stream="0"/>
+            <format name="TI964 a" pad="4" stream="0"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="0"/>
+            <format name="Intel IPU4 CSI-2 0" pad="1"/>
+            <format name="ov10635 pixel array a" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner a" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner a" pad="1"/>
+            <selection name="ov10635 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner a" srcPad="1" sinkName="TI964 a" sinkPad="0" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI-2 0 capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 0 capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- BE capture -->
+            <format name="TI964 a" pad="0" stream="0"/>
+            <format name="TI964 a" pad="4" stream="0"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="0"/>
+            <format name="ov10635 pixel array a" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner a" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner a" pad="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8"/>
+            <selection name="ov10635 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner a" srcPad="1" sinkName="TI964 a" sinkPad="0" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-vc-2" description="ov10635 2 virtual channel ." virtualChannel="true" vcSeq="2" vcNum="4" vcGroupId="0">
+
+        <MediaCtlConfig id="0"> <!-- UYVY FE capture -->
+            <format name="TI964 a" pad="1" stream="0"/>
+            <format name="TI964 a" pad="4" stream="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="2"/>
+            <format name="ov10635 pixel array b" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner b" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner b" pad="1"/>
+            <selection name="ov10635 binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner b" srcPad="1" sinkName="TI964 a" sinkPad="1" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="1" sinkStream="0" srcPad="4" srcStream="1" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="2" sinkName="Intel IPU4 CSI-2 0 capture 1" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="1" srcPad="2" srcStream="1" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 0 capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- UYVY BE capture -->
+            <format name="TI964 a" pad="1" stream="0"/>
+            <format name="TI964 a" pad="4" stream="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="1"/>
+            <format name="Intel IPU4 CSI-2 0" pad="2"/>
+            <format name="ov10635 pixel array b" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner b" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner b" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="9"/>
+            <selection name="ov10635 binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner b" srcPad="1" sinkName="TI964 a" sinkPad="1" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="1" sinkStream="0" srcPad="4" srcStream="1" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="2" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="1" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="1" srcPad="2" srcStream="1" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="9" sinkName="Intel IPU4 BE SOC capture 1" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="1" sinkStream="1" srcPad="9" srcStream="1" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-vc-3" description="ov10635 3 virtual channel." virtualChannel="true" vcSeq="3" vcNum="4" vcGroupId="0">
+
+        <MediaCtlConfig id="0"> <!-- UYVY FE capture -->
+            <format name="TI964 a" pad="2" stream="0"/>
+            <format name="TI964 a" pad="4" stream="2"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="2"/>
+            <format name="Intel IPU4 CSI-2 0" pad="3"/>
+            <format name="ov10635 pixel array c" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner c" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner c" pad="1"/>
+            <selection name="ov10635 binner c" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner c" srcPad="1" sinkName="TI964 a" sinkPad="2" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="2" sinkStream="0" srcPad="4" srcStream="2" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="3" sinkName="Intel IPU4 CSI-2 0 capture 2" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="2" srcPad="3" srcStream="2" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 0 capture 2" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- UYVY BE capture -->
+            <format name="TI964 a" pad="2" stream="0"/>
+            <format name="TI964 a" pad="4" stream="2"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="2"/>
+            <format name="Intel IPU4 CSI-2 0" pad="3"/>
+            <format name="ov10635 pixel array c" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner c" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner c" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="2"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="10"/>
+            <selection name="ov10635 binner c" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner c" srcPad="1" sinkName="TI964 a" sinkPad="2" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="2" sinkStream="0" srcPad="4" srcStream="2" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="3" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="2" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="2" srcPad="3" srcStream="2" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="10" sinkName="Intel IPU4 BE SOC capture 2" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="2" sinkStream="2" srcPad="10" srcStream="2" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 2" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-vc-4" description="ov10635 4 virtual channel" virtualChannel="true" vcSeq="4" vcNum="4" vcGroupId="0">
+
+        <MediaCtlConfig id="0"> <!-- UYVY FE capture -->
+            <format name="TI964 a" pad="3" stream="0"/>
+            <format name="TI964 a" pad="4" stream="3"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="3"/>
+            <format name="Intel IPU4 CSI-2 0" pad="4"/>
+            <format name="ov10635 pixel array d" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner d" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner d" pad="1"/>
+            <selection name="ov10635 binner d" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner d" srcPad="1" sinkName="TI964 a" sinkPad="3" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="3" sinkStream="0" srcPad="4" srcStream="3" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="4" sinkName="Intel IPU4 CSI-2 0 capture 3" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="3" srcPad="4" srcStream="3" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 0 capture 3" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- UYVY BE capture -->
+            <format name="TI964 a" pad="3" stream="0"/>
+            <format name="TI964 a" pad="4" stream="3"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" stream="3"/>
+            <format name="Intel IPU4 CSI-2 0" pad="4"/>
+            <format name="ov10635 pixel array d" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner d" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner d" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="3"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="11"/>
+            <selection name="ov10635 binner d" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner d" srcPad="1" sinkName="TI964 a" sinkPad="3" enable="true"/>
+            <link srcName="TI964 a" srcPad="4" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <route name="TI964 a" sinkPad="3" sinkStream="0" srcPad="4" srcStream="3" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="4" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="3" enable="true"/>
+            <route name="Intel IPU4 CSI-2 0" sinkPad="0" sinkStream="3" srcPad="4" srcStream="3" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="11" sinkName="Intel IPU4 BE SOC capture 3" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="3" sinkStream="3" srcPad="11" srcStream="3" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 3" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-2-vc" description="ov10635-2 virtual channel" virtualChannel="true" vcSeq="1" vcNum="4" vcGroupId="1">
+
+        <MediaCtlConfig id="0"> <!-- FE capture -->
+            <format name="TI964 b" pad="0" stream="0"/>
+            <format name="TI964 b" pad="4" stream="0"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="0"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1"/>
+            <format name="ov10635 pixel array e" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner e" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner e" pad="1"/>
+            <selection name="ov10635 binner e" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner e" srcPad="1" sinkName="TI964 b" sinkPad="0" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI-2 4 capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 4 capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- BE capture -->
+            <format name="TI964 b" pad="0" stream="0"/>
+            <format name="TI964 b" pad="4" stream="0"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="0"/>
+            <format name="ov10635 pixel array e" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner e" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner e" pad="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8"/>
+            <selection name="ov10635 binner e" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner e" srcPad="1" sinkName="TI964 b" sinkPad="0" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="0" sinkStream="0" srcPad="4" srcStream="0" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="0" srcPad="1" srcStream="0" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-2-vc-2" description="ov10635-2 2 virtual channel ." virtualChannel="true" vcSeq="2" vcNum="4" vcGroupId="1">
+
+        <MediaCtlConfig id="0"> <!-- UYVY FE capture -->
+            <format name="TI964 b" pad="1" stream="0"/>
+            <format name="TI964 b" pad="4" stream="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="2"/>
+            <format name="ov10635 pixel array f" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner f" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner f" pad="1"/>
+            <selection name="ov10635 binner f" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner f" srcPad="1" sinkName="TI964 b" sinkPad="1" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="1" sinkStream="0" srcPad="4" srcStream="1" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="2" sinkName="Intel IPU4 CSI-2 4 capture 1" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="1" srcPad="2" srcStream="1" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 4 capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- UYVY BE capture -->
+            <format name="TI964 b" pad="1" stream="0"/>
+            <format name="TI964 b" pad="4" stream="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="2"/>
+            <format name="ov10635 pixel array f" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner f" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner f" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="9"/>
+            <selection name="ov10635 binner f" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner f" srcPad="1" sinkName="TI964 b" sinkPad="1" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="1" sinkStream="0" srcPad="4" srcStream="1" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="2" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="1" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="1" srcPad="2" srcStream="1" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="9" sinkName="Intel IPU4 BE SOC capture 1" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="1" sinkStream="1" srcPad="9" srcStream="1" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-2-vc-3" description="ov10635-2 3 virtual channel." virtualChannel="true" vcSeq="3" vcNum="4" vcGroupId="1">
+
+        <MediaCtlConfig id="0"> <!-- UYVY FE capture -->
+            <format name="TI964 b" pad="2" stream="0"/>
+            <format name="TI964 b" pad="4" stream="2"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="2"/>
+            <format name="Intel IPU4 CSI-2 4" pad="3"/>
+            <format name="ov10635 pixel array g" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner g" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner g" pad="1"/>
+            <selection name="ov10635 binner g" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner g" srcPad="1" sinkName="TI964 b" sinkPad="2" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="2" sinkStream="0" srcPad="4" srcStream="2" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="3" sinkName="Intel IPU4 CSI-2 4 capture 2" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="2" srcPad="3" srcStream="2" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 4 capture 2" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- UYVY BE capture -->
+            <format name="TI964 b" pad="2" stream="0"/>
+            <format name="TI964 b" pad="4" stream="2"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="2"/>
+            <format name="Intel IPU4 CSI-2 4" pad="3"/>
+            <format name="ov10635 pixel array g" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner g" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner g" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="2"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="10"/>
+            <selection name="ov10635 binner g" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner g" srcPad="1" sinkName="TI964 b" sinkPad="2" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="2" sinkStream="0" srcPad="4" srcStream="2" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="3" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="2" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="2" srcPad="3" srcStream="2" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="10" sinkName="Intel IPU4 BE SOC capture 2" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="2" sinkStream="2" srcPad="10" srcStream="2" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 2" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+
+    <Sensor name="ov10635-2-vc-4" description="ov10635-2 4 virtual channel" virtualChannel="true" vcSeq="4" vcNum="4" vcGroupId="1">
+
+        <MediaCtlConfig id="0"> <!-- UYVY FE capture -->
+            <format name="TI964 b" pad="3" stream="0"/>
+            <format name="TI964 b" pad="4" stream="3"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="3"/>
+            <format name="Intel IPU4 CSI-2 4" pad="4"/>
+            <format name="ov10635 pixel array h" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner h" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner h" pad="1"/>
+            <selection name="ov10635 binner h" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner h" srcPad="1" sinkName="TI964 b" sinkPad="3" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="3" sinkStream="0" srcPad="4" srcStream="3" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="4" sinkName="Intel IPU4 CSI-2 4 capture 3" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="3" srcPad="4" srcStream="3" flag="1"/>
+
+            <videonode name="Intel IPU4 CSI-2 4 capture 3" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- UYVY BE capture -->
+            <format name="TI964 b" pad="3" stream="0"/>
+            <format name="TI964 b" pad="4" stream="3"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0" stream="3"/>
+            <format name="Intel IPU4 CSI-2 4" pad="4"/>
+            <format name="ov10635 pixel array h" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner h" pad="0" width="1280" height="800"/>
+            <format name="ov10635 binner h" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="3"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="11"/>
+            <selection name="ov10635 binner h" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <!-- flag in "route" is OR by the followings: MEDIA_LNK_FL_ENABLED:(1 << 0), MEDIA_LNK_FL_IMMUTABLE:(1 << 1), MEDIA_LNK_FL_DYNAMIC:(1 << 2) -->
+            <link srcName="ov10635 binner h" srcPad="1" sinkName="TI964 b" sinkPad="3" enable="true"/>
+            <link srcName="TI964 b" srcPad="4" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <route name="TI964 b" sinkPad="3" sinkStream="0" srcPad="4" srcStream="3" flag="5"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="4" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="3" enable="true"/>
+            <route name="Intel IPU4 CSI-2 4" sinkPad="0" sinkStream="3" srcPad="4" srcStream="3" flag="1"/>
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="11" sinkName="Intel IPU4 BE SOC capture 3" sinkPad="0" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="3" sinkStream="3" srcPad="11" srcStream="3" flag="1"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 3" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x800,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x800,0,0,
+                                          V4L2_PIX_FMT_NV16,640x480,0,1,
+                                          V4L2_PIX_FMT_NV16,1280x800,0,1"/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,1280x800"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+        <exposureLag value="3"/>
+    </Sensor>
+</CameraSettings>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2018 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+
+    <Sensor name="ov2740" sensorType="raw" description="ov2740 with full feature support.">
+        <MediaCtlConfig id="0" ConfigMode="NORMAL" outputWidth="1920" outputHeight="1088" format="V4L2_PIX_FMT_YUYV420_V32"> <!-- VEC_YUV BE capture -->
+            <control name="ov2740 binner a" ctrlId="V4L2_CID_LINK_FREQ" value="0" ctrlName="set FREQ"/>
+            <control name="ov2740 binner a" ctrlId="V4L2_CID_WDR_MODE" value="0" ctrlName="set WDR"/>
+
+            <link srcName="ov2740 pixel array a" srcPad="0" sinkName="ov2740 binner a" sinkPad="0" enable="true"/>
+            <link srcName="ov2740 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI2 BE" srcPad="1" sinkName="Intel IPU4 ISA" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="1" sinkName="Intel IPU4 ISA capture" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA config" srcPad="0" sinkName="Intel IPU4 ISA" sinkPad="2" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="3" sinkName="Intel IPU4 ISA 3A stats" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 ISA" srcPad="4" sinkName="Intel IPU4 ISA scaled capture" sinkPad="0" enable="true"/>
+            <format name="ov2740 pixel array a" pad="0" type="RESOLUTION_MAX" width="1932" height="1092" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="ov2740 binner a" pad="0" width="1932" height="1092" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="ov2740 binner a" pad="1" width="1932" height="1092" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="ov2740 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1932" height="1092"/>
+            <format name="Intel IPU4 CSI-2 0" pad="0" width="1932" height="1092" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="0" width="1932" height="1092" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 CSI2 BE" pad="1" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <selection name="Intel IPU4 CSI2 BE" pad="1" target="V4L2_SEL_TGT_CROP" left="0" top="0" width="1920" height="1088"/>
+            <format name="Intel IPU4 ISA" pad="0" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG10_1X10"/>
+            <format name="Intel IPU4 ISA" pad="1" width="1920" height="1088" format="V4L2_MBUS_FMT_SGRBG12_1X12"/>
+            <selection name="Intel IPU4 ISA" pad="4" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="1920" height="1088"/>
+            <format name="Intel IPU4 ISA" pad="4" width="1920" height="1088" format="MEDIA_BUS_FMT_YUYV12_1X24"/>
+
+            <videonode name="Intel IPU4 ISA capture" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 ISA scaled capture" videoNodeType="VIDEO_ISA_SCALE"/>
+            <videonode name="Intel IPU4 ISA config" videoNodeType="VIDEO_ISA_CONFIG"/>
+            <videonode name="Intel IPU4 ISA 3A stats" videoNodeType="VIDEO_AA_STATS"/>
+            <videonode name="ov2740 pixel array a" videoNodeType="VIDEO_PIXEL_ARRAY"/>
+            <videonode name="ov2740 binner a" videoNodeType="VIDEO_PIXEL_BINNER"/>
+            <videonode name="Intel IPU4 ISA" videoNodeType="VIDEO_ISA_DEVICE"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+
+            <output port="main" width="1920" height="1088" format="V4L2_PIX_FMT_YUYV420_V32"/>
+            <output port="second" width="1920" height="1088" format="V4L2_PIX_FMT_SGRBG12V32"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate),mcId" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_NV12,1920x1080,0,0"/>
+            <fpsRange value="10,30"/>
+            <evRange value="-1,1"/>
+            <evStep value="1,2"/>
+            <supportedAeMode value="AUTO"/>
+            <supportedVideoStabilizationModes value="OFF"/>
+            <supportedAntibandingMode value="AUTO"/>
+            <supportedAwbMode value="AUTO"/>
+            <supportedAfMode value="AUTO"/>
+
+            <!-- 0: OFF, 1: AUTO, 2: USE_SCENE_MODE, 3: OFF_KEEP_STATE -->
+            <control.availableModes value="1"/>
+
+            <sensor.info.sensitivityRange value="100,800"/>
+            <!-- microsecond -->
+            <sensor.info.exposureTimeRange value="100,200000"/>
+
+            <!-- Blow static metadata are for camera HAL V3 -->
+            <sensor.info.activeArraySize value="0,0,1932,1092"/>
+            <sensor.info.pixelArraySize value="1932x1092"/>
+            <!-- 3296x1.12um 2480x1.12um -->
+            <sensor.info.physicalSize value="3.69,2.77"/>
+            <!-- 0: off, 1: solid color, 2: color bars  -->
+            <sensor.availableTestPatternModes value="0,2"/>
+            <!-- 0:RGGB, 1:GRBG, 2:GBRG, 3:BGGR, 4:RGB -->
+            <sensor.info.colorFilterArrangement value="2"/>
+
+            <lens.facing value="0"/>
+            <lens.info.availableApertures value="2.5"/>
+            <lens.info.availableFilterDensities value="0.0"/>
+            <lens.info.availableFocalLengths value="4.28"/>
+            <lens.info.hyperfocalDistance value="0.0"/>
+            <lens.info.minimumFocusDistance value="0.1"/>
+            <lens.info.shadingMapSize value="0,0"/>
+            <!-- 0:UNCALIBRATED, 1:APPROXIMATE, 2:CALIBRATED -->
+            <lens.info.focusDistanceCalibration value="1"/>
+
+            <!-- raw, yuv, jpeg -->
+            <request.maxNumOutputStreams value="0,1,0"/>
+            <request.pipelineMaxDepth value="6"/>
+            <!-- 0:backward, 1:manual_sensor, 2:manual_pso_processing, 3:raw, 4:zsl, 5:read_sensor_settings, 6:burst_capture -->
+            <request.availableCapabilities value="0"/>
+
+            <jpeg.maxSize value="3164616"/>  <!-- 1932*1092*1.5 -->
+            <jpeg.availableThumbnailSizes value="0,0,384,216,384,288"/> <!-- INCREASING ORDER -->
+
+            <!-- 0:off, 1:fast, 2:high_quality, 3:zero_shutter_lag -->
+            <edge.availableEdgeModes value="0"/>
+            <!-- 0:off, 1:fast, 2:high_quality -->
+            <hotPixel.availableHotPixelModes value="1"/>
+            <!-- 0:off, 1:fast, 2:high_quality, 3:minimal, 4:zero_shutter_lag -->
+            <noiseReduction.availableNoiseReductionModes value="0"/>
+            <tonemap.maxCurvePoints value="1024"/>
+            <!-- 0:contrast_curve, 1:fast, 2:high_quality, 3:gamma_value, 4:preset_curve -->
+            <tonemap.availableToneMapModes value="1,2"/>
+            <!-- 0:limited, 1:full, 2:legacy, 3:level3 -->
+            <info.supportedHardwareLevel value="0"/>
+            <!-- 0:per-frame, -1:unknown, other positive number:frame count -->
+            <sync.maxLatency value="-1"/>
+
+            <control.maxRegions value="1,0,0" />
+
+        </StaticMetadata>
+
+        <!-- list of tuning config info. Meanings of each part are "ConfigMode,TuningMode,aiqb name" -->
+        <!-- AUTO ConfigMode is not a real mode in HAL, and TuningMode must have an corresponding real ConfigMode in list. -->
+        <supportedTuningConfig value="NORMAL,VIDEO,imx185,
+                                      STILL_CAPTURE,STILL_CAPTURE,ov2740"/>
+
+        <supportedISysSizes value="1920x1080,1920x1088"/> <!-- ascending order request -->
+        <supportedISysFormat value="V4L2_PIX_FMT_YUYV420_V32,V4L2_PIX_FMT_SGRBG12V32"/>
+        <iSysRawFormat value="V4L2_PIX_FMT_SGRBG12V32"/>
+        <isaScaleRawConfig value="V4L2_PIX_FMT_SGRBG12V32,1920x1088"/>
+
+        <pSysFormat value="V4L2_PIX_FMT_NV12"/>
+        <enableAIQ value="true"/>
+        <lensName value="camera-pwm"/>
+        <lensHwType value="LENS_PWM_HW"/>
+        <lensCloseCode value="200"/>
+        <cITMaxMargin value="4"/> <!--coarse integration time max margin -->
+        <initialSkipFrame value="1"/>
+        <exposureLag value="2"/>
+        <gainLag value="1"/>
+        <ltmGainLag value="1"/>
+        <enableHDR value="false"/>
+        <yuvColorRangeMode value="full"/> <!-- there are 2 yuv color range mode, like full, reduced. -->
+        <custom3ALibraryName value=""/>
+        <pipeSwitchDelayFrame value="60"/>
+        <customAicLibraryName value=""/>
+        <graphSettingsFile value="graph_settings_ov2740.xml"/>
+        <enablePSysProcessor value="true"/>
+    </Sensor>
+
+    <Common>
+    </Common>
+</CameraSettings>

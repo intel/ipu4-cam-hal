@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2018 Intel Corporation
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<graph_settings>
+    <sensor_modes sensor_name="ar0231" csi_port="4" metadata="0" interlaced="0" bayer_order="GRBG">
+        <available_bit_per_pixel>
+            <bpp value="12"/>
+            <bpp value="10"/>
+        </available_bit_per_pixel>
+        <pll_configs>
+            <pll_config id="0" pixel_rate="600000000" pixel_rate_csi="599680000" bpp="10"/>
+            <pll_config id="1" pixel_rate="600000000" pixel_rate_csi="374800000" bpp="8"/>
+            <pll_config id="2" pixel_rate="600000000" pixel_rate_csi="299840000" bpp="10"/>
+        </pll_configs>
+        <sensor_mode name="1920x1088_f" id="0" width="1920" height="1088" min_fll="1660" min_llp="6024" fps="30.0">
+            <pixel_array>
+                <input width="1920" height="1088" left="0" top="0"/>
+                <output width="1920" height="1088" left="0" top="0"/>
+            </pixel_array>
+            <binner h_factor="1" v_factor="1">
+                <input width="1920" height="1088" left="0" top="0"/>
+                <output width="1920" height="1088" left="0" top="0"/>
+            </binner>
+            <scaler num_factor="16" denom_factor="16">
+                <input width="1920" height="1088" left="0" top="0"/>
+                <output width="1920" height="1088" left="0" top="0"/>
+            </scaler>
+        </sensor_mode>
+    </sensor_modes>
+
+    <!-- vHDR pipe for 1920x1080-->
+    <settings key="8402" id="100023" op_mode="HDR" active_outputs="1">
+        <sensor mode_id="1920x1088_f" analogue_gain="100" exposure="500">
+            <port_0 width="1920" height="1088" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1080" stream_id="60001"/>
+        <csi_be_soc>
+            <output width="1920" height="1088" format="BA12"/>
+        </csi_be_soc>
+        <video_hp_drc2_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="BA12"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <!-- resolution info -->
+            <bxt_isl_inputcrop>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_isl_inputcrop>
+            <bxt_inputscaler>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_inputscaler>
+            <bxt_norm_lin>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_norm_lin>
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_ccm enabled="0"/>
+            <bxt_blc enabled="0"/>
+            <bxt_wb enabled="0"/>
+            <!-- metadata -->
+            <bxt_norm_lin metadata="15,0,0,0"/>
+            <bxt_bnlm metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+        </video_hp_drc2_pre_gdc>
+        <video_hp_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1080" format="NV12" peer="video0"/>
+            <scaled_output_0 enabled="0"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <gdc3_1>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1080" left="0" top="0" right="0" bottom="0"/>
+            </gdc3_1>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+
+            <bxt_ofa_dp enabled="0"/>
+            <sc_outputscaler_dp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- metadata -->
+        </video_hp_post_gdc>
+    </settings>
+
+    <!-- vHDR pipe for 1920x1088-->
+    <settings key="8403" id="100023" op_mode="HDR" active_outputs="1">
+        <sensor mode_id="1920x1088_f" analogue_gain="100" exposure="500">
+            <port_0 width="1920" height="1088" format="RG10"/>
+        </sensor>
+        <video0 width="1920" height="1088" stream_id="60001"/>
+        <csi_be_soc>
+            <output width="1920" height="1088" format="BA12"/>
+        </csi_be_soc>
+        <video_hp_drc2_pre_gdc stream_id="60001">
+            <input width="1920" height="1088" format="BA12"/>
+            <ipu_intermediate width="1920" height="1088" format="V420"/>
+            <!-- resolution info -->
+            <bxt_isl_inputcrop>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_isl_inputcrop>
+            <bxt_inputscaler>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_inputscaler>
+            <bxt_norm_lin>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_norm_lin>
+            <bxt_wb>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_wb>
+            <bxt_bnlm>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </bxt_bnlm>
+            <!-- disabled kernels -->
+            <bxt_ccm enabled="0"/>
+            <bxt_blc enabled="0"/>
+            <bxt_wb enabled="0"/>
+            <!-- metadata -->
+            <bxt_norm_lin metadata="15,0,0,0"/>
+            <bxt_bnlm metadata="1,0,0,0"/>
+            <bxt_rynr_collector metadata="1,0,0,0"/>
+            <bxt_rynr_splitter metadata="1,0,0,0"/>
+        </video_hp_drc2_pre_gdc>
+        <video_hp_post_gdc stream_id="60001">
+            <input width="1920" height="1088" format="V420"/>
+            <non_scaled_output width="1920" height="1088" format="NV12" peer="video0"/>
+            <scaled_output_0 enabled="0"/>
+            <scaled_output_1 enabled="0"/>
+            <!-- resolution info -->
+            <gdc3>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3>
+            <gdc3_1>
+                <input width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+                <output width="1920" height="1088" left="0" top="0" right="0" bottom="0"/>
+            </gdc3_1>
+            <!-- disabled kernels-->
+            <dma_cropper_mp enabled="0"/>
+
+            <bxt_ofa_dp enabled="0"/>
+            <sc_outputscaler_dp enabled="0"/>
+            <dma_cropper_dp enabled="0"/>
+            <bxt_ofa_ppp enabled="0"/>
+            <dma_cropper_ppp enabled="0"/>
+            <sc_outputscaler_ppp enabled="0"/>
+            <!-- metadata -->
+        </video_hp_post_gdc>
+    </settings>
+</graph_settings>

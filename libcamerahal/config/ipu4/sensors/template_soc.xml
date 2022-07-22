@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2017 Intel Corporation.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<CameraSettings>
+    <Sensor name="template" description="template bypass">
+    <!-- sensor name, type and description -->
+
+        <MediaCtlConfig id="0"> <!-- FE capture -->
+            <format name="adv7481 pixel array a" pad="0" width="1920" height="1080"/> <!--the format/resolution for pixel array pad0-->
+            <format name="adv7481 binner a" pad="0" width="1920" height="1080"/> <!--the format/resolution for binner pad 0-->
+            <format name="adv7481 binner a" pad="1"/> <!--the format/resolution for binner pad 1-->
+            <format name="Intel IPU4 CSI-2 0" pad="0"/> <!--the format/resolution for CSI-2(CSI FE) pad0, don't need to set pad1 if output pad is same with input pad-->
+            <selection name="adv7481 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/> <!--the downscale for binner entity-->
+            <link srcName="adv7481 pixel array a" srcPad="0" sinkName="adv7481 binner a" sinkPad="0" enable="true"/> <!--link pixel array to binner-->
+            <link srcName="adv7481 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/> <!--link binner to CSI-2 0 (front-end)-->
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI-2 0 capture 0" sinkPad="0" enable="true"/> <!--link CSI-2 0(FE) to capture output-->
+
+            <videonode name="Intel IPU4 CSI-2 0 capture 0" videoNodeType="VIDEO_GENERIC"/> <!--capture device name-->
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- BE capture -->
+            <format name="Intel IPU4 CSI-2 0" pad="0"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="0"/> <!--the format/resolution for BE SOC pad 0-->
+            <format name="Intel IPU4 CSI2 BE SOC" pad="8"/> <!--the format/resolution for BE SOC pad 1-->
+            <!--the input/output pad correspondence for BE SOC  0-8, 1-9, 2-10, 3-11... -->
+            <format name="adv7481 pixel array a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481 binner a" pad="0" width="1920" height="1080"/>
+            <format name="adv7481 binner a" pad="1"/>
+            <selection name="adv7481 binner a" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481 pixel array a" srcPad="0" sinkName="adv7481 binner a" sinkPad="0" enable="true"/>
+            <link srcName="adv7481 binner a" srcPad="1" sinkName="Intel IPU4 CSI-2 0" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 0" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="0" enable="true"/> <!--link to CSI-2 0 to BE SOC-->
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="0" sinkStream="0" srcPad="8" srcStream="0" flag="5"/> <!--Set the route for BE SOC (pad0->pad8), flags 5-->
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="8" sinkName="Intel IPU4 BE SOC capture 0" sinkPad="0" enable="true"/> <!--link BE SOC to capture output-->
+
+            <videonode name="Intel IPU4 BE SOC capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 0" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate), mcId(the id of MediaCtlConfig)" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,720x576,0,0,
+                                          V4L2_PIX_FMT_UYVY,800x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x720,0,0,
+                                          V4L2_PIX_FMT_UYVY,1920x1080,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,720x576,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x720,0,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,0,0,
+                                          ..............................."/>
+            <fpsRange value="10,30,10,60"/> <!-- fps range 10-30, 10-60 -->
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,720x480,720x576,800x480,1280x720,1920x1080"/> <!-- the supported resolution for isys output  -->
+        <!-- the supported format for isys output  -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_BGR24,V4L2_PIX_FMT_RGB565,V4L2_PIX_FMT_XBGR32,V4L2_PIX_FMT_XRGB32,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+    </Sensor>
+
+    <!-- the second camera instance  -->
+    <Sensor name="template-2" description="template-2 bypass">
+        <MediaCtlConfig id="0"> <!-- FE capture -->
+            <format name="adv7481b pixel array b" pad="0" width="1920" height="1080"/> <!-- the second pixel array: b(i2c address) -->
+            <format name="adv7481b binner b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="1"/>
+            <format name="Intel IPU4 CSI-2 4" pad="0"/> <!-- use the "CSI-2 4" second FE -->
+            <selection name="adv7481b binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481b pixel array b" srcPad="0" sinkName="adv7481b binner b" sinkPad="0" enable="true"/>
+            <link srcName="adv7481b binner b" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI-2 4 capture 0" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 CSI-2 4 capture 0" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <MediaCtlConfig id="1"> <!-- BE capture -->
+            <format name="Intel IPU4 CSI-2 4" pad="0"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="1"/>
+            <format name="Intel IPU4 CSI2 BE SOC" pad="9"/>
+            <format name="adv7481b pixel array b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="0" width="1920" height="1080"/>
+            <format name="adv7481b binner b" pad="1"/>
+            <selection name="adv7481b binner b" pad="0" target="V4L2_SEL_TGT_COMPOSE" top="0" left="0" width="0" height="0"/>
+            <link srcName="adv7481b pixel array b" srcPad="0" sinkName="adv7481b binner b" sinkPad="0" enable="true"/>
+            <link srcName="adv7481b binner b" srcPad="1" sinkName="Intel IPU4 CSI-2 4" sinkPad="0" enable="true"/>
+            <link srcName="Intel IPU4 CSI-2 4" srcPad="1" sinkName="Intel IPU4 CSI2 BE SOC" sinkPad="1" enable="true"/>
+            <route name="Intel IPU4 CSI2 BE SOC" sinkPad="1" sinkStream="0" srcPad="9" srcStream="1" flag="1"/> <!--Set the route for BE SOC (pad1->pad9), flags 1: second output-->
+            <link srcName="Intel IPU4 CSI2 BE SOC" srcPad="9" sinkName="Intel IPU4 BE SOC capture 1" sinkPad="0" enable="true"/>
+
+            <videonode name="Intel IPU4 BE SOC capture 1" videoNodeType="VIDEO_GENERIC"/>
+            <videonode name="Intel IPU4 CSI-2 4" videoNodeType="VIDEO_ISYS_RECEIVER"/>
+        </MediaCtlConfig>
+
+        <StaticMetadata>
+            <!-- list of stream config info. Meanings of each part is "format,widthxheight,field(0 is none, 7 is alternate), mcId(the id of MediaCtlConfig)" -->
+            <supportedStreamConfig value="V4L2_PIX_FMT_UYVY,640x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,720x576,0,0,
+                                          V4L2_PIX_FMT_UYVY,800x480,0,0,
+                                          V4L2_PIX_FMT_UYVY,1280x720,0,0,
+                                          V4L2_PIX_FMT_UYVY,1920x1080,0,0,
+                                          V4L2_PIX_FMT_YUYV,640x480,0,0,
+                                          V4L2_PIX_FMT_YUYV,720x576,0,0,
+                                          V4L2_PIX_FMT_YUYV,1280x720,0,0,
+                                          V4L2_PIX_FMT_YUYV,1920x1080,0,0,
+                                          .............................."/>
+            <fpsRange value="10,30,10,60"/>
+        </StaticMetadata>
+
+        <supportedISysSizes value="640x480,720x480,720x576,800x480,1280x720,1920x1080"/> <!-- the supported resolution for isys output  -->
+        <supportedISysFormat value="V4L2_PIX_FMT_UYVY,V4L2_PIX_FMT_YUYV,V4L2_PIX_FMT_BGR24,V4L2_PIX_FMT_RGB565,V4L2_PIX_FMT_XBGR32,V4L2_PIX_FMT_XRGB32,V4L2_PIX_FMT_NV16"/>
+        <enableAIQ value="false"/>
+    </Sensor>
+</CameraSettings>

@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libipu4
+Description: ipu4 fw library
+URL: http://www.intel.com
+Version: VERSION
+Libs: -L${libdir} -lipu4
+Cflags: -I${includedir}/libipu

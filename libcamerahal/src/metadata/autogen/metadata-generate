@@ -1,0 +1,79 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2012 The Android Open Source Project
+# Copyright (C) 2016-2018 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#
+# Generate all files we have templates for:
+#   ../src/camera_metadata_tag_info.c
+#   ../src/camera_metadata_tags.h
+
+
+thisdir=$(cd "$(dirname "$0")"; pwd)
+out_files=()
+
+function relpath() {
+    python -c "import os.path; print os.path.relpath('$1', '$PWD')"
+}
+
+# Generates a file. Appends to $out_files array as a side effect.
+function gen_file() {
+    local in=$thisdir/$1
+    local out=$thisdir/$2
+
+    gen_file_abs "$in" "$out"
+    return $?
+}
+
+function gen_file_abs() {
+    local in="$1"
+    local out="$2"
+    local intermediates="$3"
+
+    python $thisdir/metadata_parser_xml.py $thisdir/metadata_properties.xml $in $out
+
+    local succ=$?
+
+    if [[ $succ -eq 0 ]]
+    then
+        echo "OK: Generated $(relpath "$out")"
+        if [[ "$intermediates" != "no" ]]; then
+          out_files+=$'\n'" $out"
+        fi
+    else
+        echo "FAIL: Errors while generating $(relpath "$out")" >& 2
+    fi
+
+    return $succ
+}
+
+$thisdir/metadata-check-dependencies || exit 1
+$thisdir/metadata-validate $thisdir/metadata_properties.xml || exit 1
+$thisdir/metadata-parser-sanity-check || exit 1
+
+# Generate C API headers and implementation
+gen_file icamera_metadata_tag_info.mako ../icamera_metadata_tag_info.c || exit 1
+gen_file icamera_metadata_tags.mako ../icamera_metadata_tags.h || exit 1
+
+
+echo ""
+echo "===================================================="
+echo "Successfully generated all metadata source files"
+echo "===================================================="
+echo ""
+
+exit 0
