@@ -8,6 +8,3 @@
   a. Copy ipu4 binary to build environment.<br>
   b. Build ipu4-camera-hal to generate "libcamhal-xxx.rpm".<br>
   c. Build icamerasrc to generate "icamerasrc-xxx.rpm".<br>
-
-
-
