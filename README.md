@@ -1,7 +1,7 @@
 ##  Build environment:
-###  Choice 1:    
+###  1:    
       ubuntu21.04, glibc 2.27
-### Choice 2:    
+###  2:    
       Yocto board, glibc 2.27
 ##  Build steps:
   a. Copy ipu4 binary to build environment.<br>
